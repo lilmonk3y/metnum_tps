@@ -1,0 +1,275 @@
+\section{Desarrollo}
+\subsection{Desarrollo de los Algoritmos}
+
+El lenguaje de programación utilizado para implementar los algoritmos fue Python. De esta forma, representamos las matrices utilizamos la estructura de datos \textit{array[array[dtype='float32']]}. 
+A su vez, se utilizo la librería Numpy, para la medición de tiempos el módulo Timeit y los gráficos utilizando Matplotlib.
+
+\subsection{Eliminación Gaussiana sin pivoteo}
+
+Basado en el pseudocódigo visto en la teórica \cite{teoEG}, se implemento utilizando python, el algoritmo de eliminación Gausianna sin pivoteo. 
+El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la matriz y el término independiente y devuelve la respuesta \textit{x}. Observemos también que se verifica que los elementos de la diagonal no queden nulos, si se diera el caso de esta situación se devuelve una excepción. (algoritmo \ref{EG_SinP})
+
+
+\begin{algorithm}
+\caption{Eliminación Gaussianna sin pivoteo}\label{EG_SinP}
+\begin{algorithmic}
+\State \textbf{EG}(\textbf{in} A : matrix, vect b) $\to \textbf{A}$
+ 
+ \State $col \gets A.shape[1]$
+ 
+ \For{$i \gets 0$ to $n-1$}
+    \If{(equal$\_$zero($A[i][i]$))}
+        \State  raise exception($"$Error, no se encuentra solución.$"$) 
+    \EndIf
+\EndFor
+\For{$j \gets i+1$ to $n$}
+
+    \State m$_{ij}$ = $\frac{a_{ji}}{a_{ii}}$
+    
+    \For{$k \gets i$ to col}
+        \State a$_{jk}$ = a$_{jk}$ - $m_{ji}*{a_{ik}}$
+    \EndFor
+
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+De esta forma, la complejidad del algoritmo propuesto es $\mathcal{O}$(n$^3$) en el tamaño de la matriz.
+Como mencionamos en la introducción teórica, una vez completada la eliminación hacia adelante, obtenemos una matriz triangular superior. Por lo tanto, podemos resolver el sistema de ecuaciones de manera directa utilizando \textit{backward substitution}, la cual implementamos de la siguiente manera llamando a la función \textit{resolver\_sistema} (algoritmo \ref{backwardSubst})
+
+\begin{algorithm}
+\caption{Backward Substitution}\label{backwardSubst}
+\begin{algorithmic}
+\State \textbf{resolver\_sistema}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
+ \State A $\gets$ EG(A, b) 
+\State n = len(A)
+\State x = np.zeros(n)
+
+\For{$i\gets n-1$ to $-1$ by $-1$}
+        \State sum = 0
+        
+        \For{j $\gets$ $0$ to $n$ by $1$ }
+            \If{i $!=$ j}
+                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
+             \EndIf       
+            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
+        \EndFor
+   \EndFor
+\Return{$x$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Eliminación Gaussiana con pivoteo} \label{seccion_EG_pivot}
+La eliminación gaussiana con pivoteo parcial es una variante del algoritmo anterior.
+En este método, la elección del pivote para cada paso de eliminación hace que el algoritmo pueda resolver más problemas. El primer paso es busca el elemento de mayor magnitud en la columna correspondiente, este elemento se intercambia con el elemento actual de la diagonal principal para garantizar que el pivote seleccionado tenga una magnitud relativamente grande, lo que reduce la posibilidad de errores numéricos debido a divisiones por valores cercanos a cero.
+
+\begin{algorithm}
+\caption{Backward Substitution}\label{backwardSubst}
+\begin{algorithmic}
+\State \textbf{resolver\_sistema}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
+ \State A $\gets$ EG(A, b) 
+\State n = len(A)
+\State x = np.zeros(n)
+
+\For{$i\gets n-1$ to $-1$ by $-1$}
+        \State sum = 0
+        
+        \For{j $\gets$ $0$ to $n$ by $1$ }
+            \If{i $!=$ j}
+                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
+             \EndIf       
+            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
+        \EndFor
+   \EndFor
+\Return{$x$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Eliminacion Gaussiana para sistemas tridiagonales}
+\label{tridiagonal}
+La eliminación gaussiana para sistemas tridiagonales es una adaptación eficiente de los algoritmos anteriores que aprovecha la estructura especial de las matrices tridiagonales. Estas matrices tienen elementos distintos de cero solo en la diagonal principal y en las dos diagonales adyacentes a esta.
+\begin{center}
+    $a_{i}x_{i-1}+b_{i}x_{i}+c_{i}x_{i+1} = d_{i}$,
+\end{center}
+    
+    \[ \begin{bmatrix}
+b_1 & c_1 & & & 0\\
+a_2 & b_2 & c_2 & & & \\
+    & a_3 & b_3 & \ddots & \\
+    &    & \ddots &  \ddots&c_{n-1}\\
+0   &    &   & a_n & b_n
+     \end{bmatrix}
+  \begin{bmatrix}
+        x_{1}\\
+        x_{2} \\
+        x_{3}\\ 
+        \vdots\\ 
+        x_{n}  
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+     d_{1} \\
+     d_{2} \\
+     d_{3} \\
+     \vdots \\
+     d_{n} \\
+ \end{bmatrix}
+ \] 
+
+ Es así que para el caso de sistemas tridiagonales, el proceso de eliminación gaussiana se simplifica significativamente ya que la gran mayoría de sus elementos es cero, lo que permite reducir la cantidad de operaciones necesarias para triangular la matriz.
+
+ \subsubsection{Eliminación Gaussiana para sistemas tridiagonales sin precómputo}
+
+ De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = y, sin necesidad de funciones auxiliares. El pseudocódigo es el siguiente:
+
+ \begin{algorithm}
+\caption{EG tridiagonales sin precómputo}\label{tridiagonal}
+\begin{algorithmic}
+\State \textbf{tridiag}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
+ \State A $\gets$ EG(A, b) 
+\State n = len(A)
+\State x = np.zeros(n)
+
+\For{$i\gets n-1$ to $-1$ by $-1$}
+        \State sum = 0
+        
+        \For{j $\gets$ $0$ to $n$ by $1$ }
+            \If{i $!=$ j}
+                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
+             \EndIf       
+            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
+        \EndFor
+   \EndFor
+\Return{$x$}
+\end{algorithmic}
+\end{algorithm}
+
+La ventaja de este algoritmo frente a EG para matrices comunes es la reducción en la complejidad temporal y espacial. Más adelante se desarrolla sobre estos beneficios ( sección \ref{resultados}).
+
+\subsubsection{Eliminación Gaussiana para sistemas tridiagonales con precómputo}
+
+La segunda variante a implementar es aquel que utiliza precómputo. Este algoritmo resuelve el sistema $A \times x = y$ en dos pasos. 
+El primer paso realiza el análogo a la triangulación de la matriz $A$, pero a nivel vectorial. De esta forma, debe modificar únicamente al vector b, ya que el vector a debe ser cero después de la triangulación (por estar debajo de la diagonal) y el vector c no se modifica en la triangulación. En forma paralela, debe precomputar cómo se debe modificar $d$ cuando efectivamente se pase como parámetro.
+
+El siguiente paso es recibir el parámetro $d$ y ajustarlo según el precómputo. Luego, con el vector resultado del precómputo y el vector $c$ calculan el vector solución.
+
+\begin{algorithm}
+\caption{EG tridiagonales precómputo}\label{tridiagonal_prec}
+\begin{algorithmic}
+\State \textbf{tridiag}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
+ \State A $\gets$ EG(A, b) 
+\State n = len(A)
+\State x = np.zeros(n)
+
+\For{$i\gets n-1$ to $-1$ by $-1$}
+        \State sum = 0
+        
+        \For{j $\gets$ $0$ to $n$ by $1$ }
+            \If{i $!=$ j}
+                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
+             \EndIf       
+            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
+        \EndFor
+   \EndFor
+\Return{$x$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Verificación de la implementación}
+Para probar nuestra implementación de sistema tridiagonal se nos pidió resolver una serie de ecuaciones diferenciales. Debemos encontrar \textit{u} para el problema $\frac{\partial^2}{\partial x^2}u = d$ utilizando la matriz tridiagonal del operador laplaciano.
+Como mencionamos anteriormente (sección \ref{Intro_laplaciano}), para el caso unidimensional la operación discreta de $\frac{\partial^2}{\partial x^2}u = d$ está dada por:
+
+u$_{i-1}$ - 2u$_{i}$ + u$_{i+1}$ = d$_{i}$
+
+A partir de la ecuación \ref{laplaciano}, esta matriz es tridiagonal donde, siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
+
+\begin{itemize}
+    \item a: vector de valores 1.
+    \item b: vector de valores -2.
+    \item c: vector de valores 1.
+\end{itemize}
+
+
+    \[ \begin{bmatrix}
+-2 & 1 & & & 0\\
+1 & -2 & 1 & & & \\
+    & 1 & -2 & \ddots & \\
+    &    & \ddots &  \ddots & 1\\
+0   &    &   & 1 & -2
+     \end{bmatrix}
+     \begin{bmatrix}
+           u_{1}\\
+           u_{2} \\
+           u_{3}\\ 
+           \vdots\\ 
+           u_{n}  
+     \end{bmatrix}
+      =
+     \begin{bmatrix}
+          d_{1} \\
+          d_{2}\\
+          d_{3}\\
+         \vdots\\ 
+         d_{n}  
+     \end{bmatrix} \]\label{laplaciano}
+
+Por esta estructura,  el algoritmo de eliminación gaussiana para tridiagonales puede aplicarse eficientemente resolviendo el sistema de ecuaciones resultantes de la discretización. Además, como la matriz es diagonal dominante, no es necesario el pivoteo pues no hay riesgo de división por cero. 
+Para resolver este inciso se modelaron los tres vectores $d$ que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$ utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
+Los resultados obtenidos se pueden ver en la sección \ref{resultados} 
+
+\begin{enumerate}[label=\alph*)] % (a), (b), (c), ...
+\label{ec_ej4}
+\item d$_{i}$ = 
+    $\begin{cases}
+      0\\
+      \frac{4}{n} & i=\lfloor \frac{n}{2} \rfloor   +1
+    \end{cases}$
+
+\item d$_{i}$ = $\frac{4}{n^{2}}$
+
+\item d$_{i}$ = $\frac{-1+2i}{(n-1)}\frac{12}{n^{2}}$
+
+\end{enumerate}
+
+\subsection{Tiempos de cómputo}
+Para este inciso, se generó para cada tamaño, las matrices y vectores correspondientes, luego se ejecutaron los algoritmos de eliminación gaussiana con pivoteo y el de eliminación gaussiana para matrices tridiagonales, estándar y el de precomputo, para dimensiones de potencia de dos (2$^k$). Este procedimiento se repitió 10 veces, tomando el tiempo mínimo de cada una de ellas. El propósito de estas iteraciones es mitigar el posible efecto de las variaciones causadas por la organización del computador (posición de las variables en memoria por ejemplo).
+
+Lo esperado es que el algoritmo tridiagonal sea notablemente más rápido a comparación del algoritmo de eliminación gaussiana con pivoteo debido a que este último tiene una complejidad cúbica en relación con el tamaño de la matriz, mientras que el primero puede resolverse de manera lineal.
+
+Los resultados obtenidos se pueden ver en la sección \ref{resultados}
+
+
+\subsection{Simulación de difusión}
+
+Para expresar la ecuación de difusión se considera el incremento para el paso \textit{k}, $u^k - u^{k-1}$ como una
+fracción ($\alpha$) del operador laplaciano aplicado a $u^{k-1}$ (ecuación explícita) y a $u^{k}$ (ecuación implícita):
+\begin{center}
+  $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k-1)} - 2u_i^{(k-1)} + u_{i+1}^{(k-1)}) - Eq (3)$
+\end{center}
+
+\begin{center}
+  $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k)} - 2u_i^{(k)} + u_{i+1}^{(k)}) - Eq (4)$
+\end{center}
+
+Reordenando los términos, obtenemos una solución de forma explícita para la ecuación (3). Ésta responde a la forma $u^{(k)} = A \times u^{(k-1)}$. Por otro lado, reordenando los términos de la ecuación (4) obtenemos una solución de forma implícita: A$\times u^{(k)}$ = $u^{(k-1)}$. De esta forma, para obtener la evolución, resolvemos el sistema de ecuaciones para cada paso $k$.
+Utilizando la última formulación, logramos generar soluciones estables para todos los valores.
+
+Para la solución implícita podemos notar que se genera un sistema tridiagonal, lo que nos permite utilizar el algoritmo de eliminación Gaussiana para sistemas tridiagonales. La eliminación Gaussiana no requiere pivoteo por la estructura de la matriz de derivada segunda. La triangulación finaliza en una matriz donde los elementos de la diagonal principal son: $a_{ii} = - \frac{i+1}{i}$. 
+Como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
+Los resultados se discutirán en la sección \ref{resultados}, teniendo en cuenta que los parámetros utilizados fueron n = 101, r = 10, m = 1000.
+
+
+\subsubsection{Simulación de difusión 2D}
+ El objetivo es implementar una simulación de cómo se difunde el calor en una placa de 15x15 unidades. El calor se origina en un punto central con una temperatura fija de 100 unidades, mientras que los bordes de la placa se mantienen siempre a 0. Este tipo de simulaciones se basa en la ecuación de difusión, que modela cómo el calor se dispersa en el tiempo.
+ Para esto utilizaremos el método implícito, lo que implica que cada paso de tiempo requiere resolver un sistema de ecuaciones lineales. Esto nos garantiza estabilidad, incluso si el coeficiente de difusión $\alpha$ = 0.1 varía.
+Por otro lado, a diferencia de la simulación anterior la matriz resultante en 2D no será tridiagonal, sino pentadiagonal, debido a que cada punto de la placa interactúa con sus vecinos en las cuatro direcciones.
+En la sección \ref{resultados} visualizaremos cómo cambia la distribución de temperatura en la placa a medida que pasa el tiempo.
+
+\subsection{Opcionales}
+\label{opcionales}
+
+Como ejercicio opcional se eligió \textit{Utilizar EG con una matriz aumentada con la identidad y obtener la inversa al diagonalizar A}.
+El objetivo entonces, es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Este enfoque se basa en transformar la matriz A en su forma diagonal, y al mismo tiempo, aplicar las mismas operaciones a la matriz identidad para obtener la inversa de A.
+
+El proceso consiste en construir una matriz aumentada que combine A y la matriz identidad I. Luego, mediante la eliminación gaussiana, se van realizando operaciones fila por fila para convertir A en la matriz identidad. Al final de este proceso, la matriz que acompaña a I será la inversa de A.
+Este método es una aplicación práctica del algoritmo de Gauss-Jordan y es especialmente útil porque, a diferencia de otras técnicas, no requiere descomposición LU o factorizaciones complicadas. Lo que hacemos es simplemente aplicar operaciones de fila que son fáciles de implementar.
