@@ -1,0 +1,60 @@
+\documentclass[a4paper]{article}
+\setlength{\parskip}{2mm}
+\input{lib/Algo1Macros}
+\usepackage{lib/caratula} % Version modificada para usar las macros de algo1 de ~> https://github.com/bcardiff/dc-tex
+\usepackage[spanish]{babel}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{subfloat}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{enumitem} %Roman enumerate item
+
+\newcommand{\dato}{\textit{Dato}}
+\newcommand{\individuo}{\textit{Individuo}}
+
+
+\begin{document}
+
+\materia{Métodos numéricos}
+\submateria{Segundo Cuatrimestre de 2024}
+\titulo{Trabajo Práctico 1 - Grupo 27}
+\subtitulo{Eliminación Gaussiana}
+
+
+\integrante{Pérez Buitrago, Ailén}{180/17}{perezailen1997@gmail.com}
+\integrante{Rivera, Christian}{184/15}{christiannahuelrivera@gmail.com}
+\integrante{Visgarra, Matias}{567/11}{m.e.visgarra@outlook.com.ar}
+% tercer integrante
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+% Sección para comentarios entre nosotros:
+\iffalse
+Para el ejercicio de los opcionales que nos piden creo que uno que puede no ser demasiado complejo y que se puede relacionar con la sección de error numérico es el punto 2. En el mismo habla de expandir la diagonalización para obtener la inversa de la matriz original. 
+Acá se me ocurrio que se lo puede relacionar con el error numérico si a la inversa calculada por nosotros le hacemos el producto con la matriz original y obtenemos "matrices que son casi como identidad". Esto creo que puede estar bueno para la experimentación.
+
+Cito el mail que nos mandó el profesor para explicar que con un solo ejercicio de los extra alcanza. "Buenas, este es un recordatorio para que incluyan ejercicios optativos. Recuerde qué como se había mencionado, la idea es que los que grupos con participantes que recursan la materia incluyan en el informe al menos un ejercicio optativo de los que figuran al final del enunciado. Puede ser cualquiera de los 3 que figuran. Cualquier cosa consultar.
+"
+\fi
+
+% ENUNCIADO del trabajo práctico https://campus.exactas.uba.ar/pluginfile.php/571695/mod_resource/content/16/TP1_2C_2024.pdf
+
+% PAUTAS de redacción del informe https://campus.exactas.uba.ar/pluginfile.php/571693/mod_resource/content/3/pautas.pdf
+
+\input{1-Introduccion}
+\input{2-Introduccion teorica}
+\input{3-desarrollo}
+\input{4-resultados y discusion}
+\input{5-conclusiones}
+\input{6-referencias}
+
+
+\end{document}
