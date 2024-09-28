@@ -11,7 +11,8 @@ El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la
 
 
 \begin{algorithm}
-\caption{Eliminación Gaussianna sin pivoteo}\label{EG_SinP}
+\caption{Eliminación Gaussianna sin pivoteo}
+\label{EG_sinP}
 \begin{algorithmic}
 \State \textbf{EG}(\textbf{in} A : matrix, vect b) $\to \textbf{A}$
  
@@ -72,9 +73,14 @@ En este método, la elección del pivote para cada paso de eliminación hace que
  
  \For{$i \gets 0$ to $n-1$}
     \If{(equal$\_$zero($A[i][i]$))}
-        \State max \gets i$
+        \State $max \gets i$
         \For{$j \gets i+1$ to $n-1$}
-            
+            \If{($A[j][i] != 0$ AND $(A[j][i]>A[max][i] or A[max][i]==0)$))}
+                \State $max \gets j$
+            \EndIf
+        \EndFor
+        \State $A[[i,max]] \gets A[[max,i]]$
+    \EndIf
     \If{(equal$\_$zero($A[i][i]$))}
         \State  raise exception($"$Error, no se encuentra solución.$"$) 
     \EndIf
