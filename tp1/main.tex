@@ -1,20 +1,29 @@
 \documentclass[a4paper]{article}
+
+% encoding and spanish output. see also -> https://tex.stackexchange.com/questions/44694/fontenc-vs-inputenc
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
 \setlength{\parskip}{2mm}
+
+% caratula uba exactas
 \input{lib/Algo1Macros}
 \usepackage{lib/caratula} % Version modificada para usar las macros de algo1 de ~> https://github.com/bcardiff/dc-tex
-\usepackage[spanish]{babel}
-\usepackage{graphicx} % Required for inserting images
-\usepackage{subfloat}
+
+% pseudo codigo 
 \usepackage{algpseudocode}
 \usepackage{algorithm}
-\usepackage[utf8]{inputenc} 
+
+% bibtext referencies 
+\usepackage{cite}
+
+% OTHER
+\usepackage{graphicx} % Required for inserting images
+\usepackage{subfloat}
 \usepackage{hyperref}
 \usepackage{amsmath}
-\usepackage{cite}
 \usepackage{enumitem} %Roman enumerate item
 
-\newcommand{\dato}{\textit{Dato}}
-\newcommand{\individuo}{\textit{Individuo}}
 
 
 \begin{document}
@@ -46,8 +55,6 @@ Cito el mail que nos mandó el profesor para explicar que con un solo ejercicio 
 
 \iffalse
 PENDIENTES para reentrega:
-- Arreglar diccionario del latex para que las letras con caracteres estén bien configuradas.
-- arreglar los warnings / referencias (labels y refs) mal escritos.
 - agregar experimento para el ejercicio opcional. Sobre precisión en la representación de los floats.
 - expandir las conclusiones del trabajo (sección "conclusiones")
 - Revisar que no faltan puntos del enunciado y luego eliminar títulos de las secciones que referencian a los puntos del enunciado (ejemplo ejercicio 2.3)
