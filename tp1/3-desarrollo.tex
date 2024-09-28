@@ -64,24 +64,30 @@ La eliminación gaussiana con pivoteo parcial es una variante del algoritmo ante
 En este método, la elección del pivote para cada paso de eliminación hace que el algoritmo pueda resolver más problemas. El primer paso es busca el elemento de mayor magnitud en la columna correspondiente, este elemento se intercambia con el elemento actual de la diagonal principal para garantizar que el pivote seleccionado tenga una magnitud relativamente grande, lo que reduce la posibilidad de errores numéricos debido a divisiones por valores cercanos a cero.
 
 \begin{algorithm}
-\caption{Backward Substitution}\label{backwardSubst}
+\caption{Eliminación Gaussiana con pivoteo}\label{backwardSubst}
 \begin{algorithmic}
-\State \textbf{resolver\_sistema}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
- \State A $\gets$ EG(A, b) 
-\State n = len(A)
-\State x = np.zeros(n)
+\State \textbf{EG}(\textbf{in} A : matrix, vect b) $\to \textbf{A}$
+ 
+ \State $col \gets A.shape[1]$
+ 
+ \For{$i \gets 0$ to $n-1$}
+    \If{(equal$\_$zero($A[i][i]$))}
+        \State max \gets i$
+        \For{$j \gets i+1$ to $n-1$}
+            
+    \If{(equal$\_$zero($A[i][i]$))}
+        \State  raise exception($"$Error, no se encuentra solución.$"$) 
+    \EndIf
+\EndFor
+\For{$j \gets i+1$ to $n$}
 
-\For{$i\gets n-1$ to $-1$ by $-1$}
-        \State sum = 0
-        
-        \For{j $\gets$ $0$ to $n$ by $1$ }
-            \If{i $!=$ j}
-                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
-             \EndIf       
-            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
-        \EndFor
-   \EndFor
-\Return{$x$}
+    \State m$_{ij}$ = $\frac{a_{ji}}{a_{ii}}$
+    
+    \For{$k \gets i$ to col}
+        \State a$_{jk}$ = a$_{jk}$ - $m_{ji}*{a_{ik}}$
+    \EndFor
+
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
