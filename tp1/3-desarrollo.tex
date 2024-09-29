@@ -42,8 +42,8 @@ Como mencionamos en la introducción teórica, una vez completada la eliminació
 \begin{algorithmic}
 \State \textbf{resolver\_sistema}(\textbf{in} A : matrix, \textbf{in} b : vector) $\to \textbf{x}$
  \State A $\gets$ EG(A, b) 
-\State n = len(A)
-\State x = np.zeros(n)
+\State n $\gets$ len(A)
+\State x $\gets$ np.zeros(n)
 
 \For{$i\gets n-1$ to $-1$ by $-1$}
     \State sum = 0
@@ -55,7 +55,7 @@ Como mencionamos en la introducción teórica, una vez completada la eliminació
         \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
     \EndFor
 \EndFor
-\Return{$x$}
+\State \textbf{return $x$}
 \end{algorithmic}
 \end{algorithm}
 
@@ -134,55 +134,82 @@ a_2 & b_2 & c_2 & & & \\
  De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = b, sin necesidad de funciones auxiliares. El pseudocódigo es el siguiente:
 
  \begin{algorithm}
-\caption{EG tridiagonales sin precómputo}
+\caption{EG para tridiagonales sin precómputo}
 \begin{algorithmic}
-\State \textbf{tridiag}(\textbf{in} A : matrix, \textbf{in} b : vector) $\to \textbf{vect x}$
- \State A $\gets$ EG(A, b) 
-\State n = len(A)
-\State x = np.zeros(n)
-
-\For{$i\gets n-1$ to $-1$ by $-1$}
-        \State sum = 0
-        
-        \For{j $\gets$ $0$ to $n$ by $1$ }
-            \If{i $!=$ j}
-                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
-             \EndIf       
-            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
-        \EndFor
-   \EndFor
-\Return{$x$}
+\State \textbf{tridiag}(\textbf{in} a : vector, \textbf{in} b : vector, \textbf{in} c : vector, \textbf{in} r : vector) $\to \textbf{u}$
+\State n $\gets$ len(b)
+\State u $\gets$ np.zeros(n)
+\State gam $\gets$ np.zeros(n)
+\State bet $\gets$ 0.0
+\If{b[0] $==$ 0}
+    \State \textbf{return} ``error: try another way''
+\EndIf
+\State u[0] $\gets$ r[0] / bet
+\For{$j\gets 1$ to $n-1$}
+    \State gam[j] $\gets$ c[j-1] / bet
+    \State bet $\gets$ b[j] - (a[j-1] * gam[j])
+    \If{bet $==$ 0.0}
+        \State \textbf{return} ``error: try another way''
+    \EndIf
+    \State u[j] $\gets$ (r[j] - a[j-1] * u[j-1]) / bet
+\EndFor
+\For{$j\gets n-2$ to $0$}
+    \State u[j] $\gets$ u[j] - gam[j+1] * u[j+1]
+\EndFor
+\State \textbf{return $u$}
 \end{algorithmic}
 \end{algorithm}
 
-La ventaja de este algoritmo frente a EG para matrices comunes es la reducción en la complejidad temporal y espacial. Más adelante se desarrolla sobre estos beneficios ( sección \ref{resultados}).
+La ventaja de este algoritmo frente a Eliminación Gaussiana para matrices comunes es la reducción en la complejidad temporal y espacial. Más adelante se desarrolla sobre estos beneficios ( sección \ref{resultados}).
 
 \subsubsection{Eliminación Gaussiana para sistemas tridiagonales con precómputo}
 
-La segunda variante a implementar es aquel que utiliza precómputo. Este algoritmo resuelve el sistema $A \times x = y$ en dos pasos. 
-El primer paso realiza el análogo a la triangulación de la matriz $A$, pero a nivel vectorial. De esta forma, debe modificar únicamente al vector b, ya que el vector a debe ser cero después de la triangulación (por estar debajo de la diagonal) y el vector c no se modifica en la triangulación. En forma paralela, debe precomputar cómo se debe modificar $d$ cuando efectivamente se pase como parámetro.
+La segunda variante a implementar es aquella que utiliza precómputo. Este algoritmo resuelve el sistema $Ax = b$ en dos pasos. 
+El primer paso realiza el análogo a la triangulación de la matriz $A$, pero a nivel vectorial. De esta forma, debe modificar únicamente al vector $b$, ya que el vector $a$ debe ser cero después de la triangulación (por estar debajo de la diagonal) y el vector $c$ no se modifica en la triangulación. En forma paralela, debe precomputar cómo se debe modificar $d$ cuando efectivamente se pase como parámetro.
 
 El siguiente paso es recibir el parámetro $d$ y ajustarlo según el precómputo. Luego, con el vector resultado del precómputo y el vector $c$ calculan el vector solución.
 
-\begin{algorithm}
-\caption{EG tridiagonales precómputo}\label{tridiagonal_prec}
-\begin{algorithmic}
-\State \textbf{tridiag}(\textbf{in} A : matrix, vect b) $\to \textbf{vect x}$
- \State A $\gets$ EG(A, b) 
-\State n = len(A)
-\State x = np.zeros(n)
+Sean \_gam y \_bet variables globales:
 
-\For{$i\gets n-1$ to $-1$ by $-1$}
-        \State sum = 0
-        
-        \For{j $\gets$ $0$ to $n$ by $1$ }
-            \If{i $!=$ j}
-                \State sum $=$ sum $+ A[i][j] *$ x$[j]$
-             \EndIf       
-            \State x$[i]$ = $\frac{(A[i][n] - sum)}{A[i][i]}$
-        \EndFor
-   \EndFor
-\Return{$x$}
+\begin{algorithm}[H]
+\caption{EG para tridiagonales con precómputo}\label{tridiagonal_prec}
+\begin{algorithmic}
+\State \textbf{tridiagPrecomputo}(\textbf{in} a : vector, \textbf{in} b : vector, \textbf{in} c : vector, \textbf{in} r : vector) $\to \textbf{u}$
+\State (gam,bet) $\gets$ tridiagAux(a,b,c)
+\State u $\gets$ np.zeros(n)
+\State u[0] $\gets$ r[0] / bet[0]
+\For{$j \gets 1$ to $n-1$}
+    \State u[j] $\gets$ (r[j] - a[j-1]*u[j-1]) / bet[j]
+\EndFor
+\For{$j \gets n-2$ to $0$}
+    \State u[j] $\gets$ u[j] -  gam[j+1]*u[j+1]
+\EndFor
+\State \textbf{return} $u$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Función auxiliar para tridiagonales con precómputo}
+\begin{algorithmic}
+\State \textbf{tridiagAux}(\textbf{in} a : vector, \textbf{in} b : vector, \textbf{in} c : vector) $\to \textbf{(\_gam,\_bet)}$
+\State n $\gets$ len(b)
+\If{np.array\_equal(\_gam, np.zeros(n)) or np.array\_equal(\_bet, np.zeros(n))}
+    \State \textbf{return} (\_gam,\_bet)
+\EndIf
+\State \_gam $\gets$ np.zeros(n)
+\State \_bet $\gets$ np.zeros(n)
+\If{b[0] $==$ 0}
+    \State \textbf{return} ``error: try another way''
+\EndIf
+\State \_bet[0] $\gets$ b[0]
+\For{$j \gets 1$ to $n-1$}
+    \State \_gam[j] $\gets$ c[j-1] / \_bet[j-1]
+    \State \_bet[j] $\gets$ b[j] - a[j-1] * \_gam[j]
+    \If{\_bet[j] $==$ 0.0}
+        \State \textbf{return} ``error: try another way''
+    \EndIf
+\EndFor
+\State \textbf{return} (\_gam,\_bet)
 \end{algorithmic}
 \end{algorithm}
 
@@ -192,7 +219,7 @@ Como mencionamos anteriormente (sección \ref{Intro_laplaciano}), para el caso u
 
 u$_{i-1}$ - 2u$_{i}$ + u$_{i+1}$ = d$_{i}$
 
-A partir de la ecuación \ref{laplaciano}, esta matriz es tridiagonal donde, siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
+Esta ecuación forma un sistema matricial como se muestra en la figura \ref{laplaciano}. Esta matriz es tridiagonal, donde siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
 
 \begin{itemize}
     \item a: vector de valores 1.
@@ -200,7 +227,7 @@ A partir de la ecuación \ref{laplaciano}, esta matriz es tridiagonal donde, sig
     \item c: vector de valores 1.
 \end{itemize}
 
-
+\begin{figure}[H]
     \[ \begin{bmatrix}
 -2 & 1 & & & 0\\
 1 & -2 & 1 & & & \\
@@ -222,8 +249,9 @@ A partir de la ecuación \ref{laplaciano}, esta matriz es tridiagonal donde, sig
           d_{3}\\
          \vdots\\ 
          d_{n}  
-     \end{bmatrix} \]\label{laplaciano}
-
+     \end{bmatrix} \]
+     \caption{Forma matricial}\label{laplaciano}
+\end{figure}
 Por esta estructura,  el algoritmo de eliminación gaussiana para tridiagonales puede aplicarse eficientemente resolviendo el sistema de ecuaciones resultantes de la discretización. Además, como la matriz es diagonal dominante, no es necesario el pivoteo pues no hay riesgo de división por cero. 
 Para resolver este inciso se modelaron los tres vectores $d$ que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$ utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
 Los resultados obtenidos se pueden ver en la sección \ref{resultados} 
