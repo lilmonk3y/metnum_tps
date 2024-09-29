@@ -231,7 +231,7 @@ A continuación, se generaron los cuatro gráficos que se pueden observar en las
 %\label{result_dif}
 %\end{figure}
 
-\begin{figure}[!htb] 
+\begin{figure}[H] 
   \label{ fig7} 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
@@ -263,7 +263,7 @@ A continuación, se generaron los cuatro gráficos que se pueden observar en las
 \label{difusion2D}
 \subsubsection{Ejercicio 7.1}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.45]{./img/2Dcasoborde0.png}}
 \caption{Resultado simulación de difusión de calor en una placa 2D, condiciones de borde con temperatura 0}
 \label{result_dif}
@@ -273,7 +273,7 @@ A continuación, se generaron los cuatro gráficos que se pueden observar en las
 Realizando la comparación de los tiempos de cómputo para la resolución del sistema de ecuaciones de difusión de calor en 2D utilizando los dos métodos vistos anteriormente (eliminación gaussiana con y sin pivoteo) pudimos observar que, como era de esperar, el tiempo de cómputo aumenta de manera rápida a medida que el tamaño de la matriz crece. Esto se relaciona con el número de operaciones realizadas para resolver el sist. de ec. lineales ya que ésta crece aproximadamente de manera cúbica con el tamaño de la matriz.
 Para matrices pequeñas (hasta tamaño 10x10), el tiempo de cómputo es prácticamente el mismo por lo que sugiere que el pivote no añade un costo computacional significativo. Sin embargo, para matrices más grandes (12x12 en adelante), se empieza a notar una diferencia pues el pivoteo mejora la estabilidad numérica del sistema.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.45]{./img/Dif2D_tiempos.png}}
 \caption{ Tiempos de cómputo para la resolución del sistema de ecuaciones de difusión de calor en 2D}
 \label{tiempos_dif2D}
@@ -281,7 +281,7 @@ Para matrices pequeñas (hasta tamaño 10x10), el tiempo de cómputo es práctic
 
 \subsubsection{Ejercicio 7.3}
 
-\begin{figure}[!htb] 
+\begin{figure}[H] 
   \label{ fig7} 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
@@ -317,8 +317,8 @@ Podemos observar que en el instante t=10, el calor ya comenzó a propagarse sign
 
  Como mencionamos en la sección \ref{opcionales}, el objetivo es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Para ello se implemento la función \textit{invertir\_sistema} cuyo pseudocódigo es el siguiente: 
  
- \begin{algorithm}
-\caption{Ejercicio opcional}\label{EG_SinP}
+\begin{algorithm}[H]
+\caption{Ejercicio opcional}
 \begin{algorithmic}
 \State \textbf{EG}(\textbf{in} A : matrix) $\to \textbf{A\_inv}$
  
