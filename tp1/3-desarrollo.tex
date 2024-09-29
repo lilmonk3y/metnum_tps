@@ -165,7 +165,7 @@ La ventaja de este algoritmo frente a Eliminación Gaussiana para matrices comun
 \subsubsection{Eliminación Gaussiana para sistemas tridiagonales con precómputo}
 
 La segunda variante a implementar es aquella que utiliza precómputo. Este algoritmo resuelve el sistema $Ax = b$ en dos pasos. 
-El primer paso realiza el análogo a la triangulación de la matriz $A$, pero a nivel vectorial. De esta forma, debe modificar únicamente al vector $b$, ya que el vector $a$ debe ser cero después de la triangulación (por estar debajo de la diagonal) y el vector $c$ no se modifica en la triangulación. En forma paralela, debe precomputar cómo se debe modificar $d$ cuando efectivamente se pase como parámetro.
+El primer paso se realiza de forma análoga a la triangulación de la matriz $A$, pero a nivel vectorial. De esta forma, debe modificar únicamente al vector $b$, ya que el vector $a$ debe ser cero después de la triangulación (por estar debajo de la diagonal) y el vector $c$ no se modifica en la triangulación. En forma paralela, debe precomputar cómo se debe modificar $d$ cuando efectivamente se pase como parámetro.
 
 El siguiente paso es recibir el parámetro $d$ y ajustarlo según el precómputo. Luego, con el vector resultado del precómputo y el vector $c$ calculan el vector solución.
 
@@ -294,7 +294,7 @@ Reordenando los términos, obtenemos una solución de forma explícita para la e
 Utilizando la última formulación, logramos generar soluciones estables para todos los valores.
 
 Para la solución implícita podemos notar que se genera un sistema tridiagonal, lo que nos permite utilizar el algoritmo de eliminación Gaussiana para sistemas tridiagonales. La eliminación Gaussiana no requiere pivoteo por la estructura de la matriz de derivada segunda. La triangulación finaliza en una matriz donde los elementos de la diagonal principal son: $a_{ii} = - \frac{i+1}{i}$. 
-Como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
+Es así que, como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
 Los resultados se discutirán en la sección \ref{resultados}, teniendo en cuenta que los parámetros utilizados fueron n = 101, r = 10, m = 1000.
 
 

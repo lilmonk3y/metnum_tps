@@ -17,11 +17,12 @@ Los sistemas de ecuaciones lineales pueden ser representados en forma matricial 
   \caption{Sistemas de ecuaciones con su respectiva representación matricial}
 \end{figure}
 
-El proceso para resolver mediante este método comienza con la matriz original y se va aplicando sobre ella una serie de pasos hasta obtener una matriz de forma triangular superior. Para realizar esto se recorre cada elemento $a_{ii}$ perteneciente a la diagonal principal, poniendo en ceros los elementos debajo de éste. Este proceso se llama diagonalización. Una vez diagonalizado el sistema, buscamos darle valores a los coeficientes del vector de incógnitas por medio de un despeje desde abajo hacia arriba, o sea, empezamos por el coeficiente inferior del vector $x$ y subiendo por el mismo usando los valores despejados previamente para obtener nuevas soluciones para los próximos coeficientes. El método descripto se conoce como \textit{Gaussian elimination with Backward substitution} \cite{Burden11}. Este método para resolver el sistema de ecuaciones tiene una complejidad computacional de $\mathcal{O}(n^3)$.
+El proceso para resolver mediante este método comienza con la matriz original y se va aplicando sobre ella una serie de pasos hasta obtener una matriz de forma triangular superior. Para realizar esto, se recorre cada elemento $a_{ii}$ perteneciente a la diagonal principal, poniendo en ceros los elementos debajo de éste; este proceso se llama diagonalización. Una vez diagonalizado el sistema, buscamos darle valores a los coeficientes del vector de incógnitas por medio de un despeje desde abajo hacia arriba, es decir, empezamos por el coeficiente inferior del vector $x$ y subiendo por el mismo usando los valores despejados previamente para obtener nuevas soluciones para los próximos coeficientes. Éste  método descripto se conoce como \textit{Gaussian elimination with Backward substitution} \cite{Burden11}.
+Considerando lo anterior, podemos notar que resolver el sistema de ecuaciones tiene una complejidad computacional de $\mathcal{O}(n^3)$.
 
 \subsection{Métodos de pivoteo para diagonalización}
 
-Para casos donde encontramos, o "creamos" por medio del mismo proceso de diagonalización, un cero en la diagonal de la matriz existen formas de obtener versiones equivalentes del sistema donde podemos continuar nuestro algoritmo de eliminación Gaussiana. Estos métodos se llaman \textit{pivoteos parciales o totales} y constan en hacer intercambios de filas o de columnas para que el sistema pueda seguir soportando el algoritmo. Cuando los intercambios son de filas los llamamos pivoteos parciales y cuando lo son de filas y columnas los llamamos pivotes totales. En el presente trabajo nos centraremos en pivoteos parciales. Observese en la figura \ref{fig:pivoting} como el proceso de eliminación gaussiana puede solucionar el hecho de encontrar un cero en la diagonal por medio del intercambio de filas.
+Para casos donde encontramos, o  ``creamos'' por medio del mismo proceso de diagonalización, un cero en la diagonal de la matriz existen formas de obtener versiones equivalentes del sistema donde podemos continuar nuestro algoritmo de eliminación Gaussiana. Estos métodos se llaman \textit{pivoteos parciales o totales} y constan en hacer intercambios de filas o de columnas para que el sistema pueda seguir soportando el algoritmo. Cuando los intercambios son de filas los llamamos pivoteos parciales y cuando lo son de filas y columnas los llamamos pivotes totales. En el presente trabajo nos centraremos en pivoteos parciales. Observese en la figura \ref{fig:pivoting} como el proceso de eliminación gaussiana puede solucionar el hecho de encontrar un cero en la diagonal por medio del intercambio de filas.
 
 \begin{figure}[H]
     $$
@@ -59,4 +60,18 @@ Por su parte, las matrices tridiagonales, caracterizadas por su estructura rala,
 \subsection{Operador Laplaciano}
 \label{Intro_laplaciano}
 
-Este operador sobre funciones escalares es diferencial para la divergencia del gradiente. Esto nos da una noción del comportamiento de la función que es utilazada para numerosos procesos físicos, como por ejemplo propagación de ondas o de calor \cite{laplaciano_web}. Este operador también lo podemos usar para problemas de difusión del estilo de caminatas aleatorias \cite{random_walk}
+Este operador ($\nabla^{2}$) sobre funciones escalares es diferencial para la divergencia del gradiente. Esto nos da una noción del comportamiento de la función que es utilazada para numerosos procesos físicos, como por ejemplo propagación de ondas o de calor \cite{laplaciano_web}. Este operador también lo podemos usar para problemas de difusión del estilo de caminatas aleatorias \cite{random_walk}
+
+\subsection{Difusión}
+\label{Intro_difusion}
+
+ La difusión es un proceso estocástico cuyo modelado implica simular cómo una entidad, en este caso vista como calor, se distribuye en un medio. La ecuación de difusión, que describe este fenómeno, puede ser discretizada y resuelta mediante métodos numéricos. En particular, el operador de Laplace o Laplaciano ($\nabla^{2}$) es un operador diferencial que juega un papel central en la descripción de la difusión. En una dimensión, la versión discreta del Laplaciano es equivalente a la segunda derivada, y se utiliza en varias areas como en el procesamiento de imágenes y análisis de datos en redes.
+
+
+\subsection{Operador Laplaciano 2D}
+\label{Intro_laplaciano2D}
+El operador laplaciano discreto en 2D es fundamental para modelar fenómenos como la difusión y el flujo de calor en una malla o grilla de puntos. Este operador se define generalmente como la suma de las diferencias de valores en los puntos vecinos, lo que permite calcular cómo cambia una cantidad en un punto respecto a sus alrededores.
+
+\subsection{Difusión 2D}
+\label{Intro_difusion2D}
+ La difusión en dos dimensiones (2D) ofrece una perspectiva más compleja en comparación con la difusión unidimensional, ya que ésta permite modelar procesos como la propagación de calor, la dispersión de contaminantes y la dinámica de poblaciones. Utilizando el laplaciano discreto, vamos a establecer ecuaciones que simulan el proceso de difusión.
