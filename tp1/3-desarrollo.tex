@@ -19,9 +19,9 @@ El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la
  
  \For{$i \gets 0$ to $n-1$}
     \If{(equal$\_$zero($A[i][i]$))}
-        \State  raise exception($"$Error, no se encuentra solución.$"$) 
+        \State  raise exception(‘‘Error, no se encuentra solución.'') 
     \EndIf
-\EndFor
+
 \For{$j \gets i+1$ to $n$}
 
     \State m$_{ij}$ = $\frac{a_{ji}}{a_{ii}}$
@@ -30,6 +30,7 @@ El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la
         \State a$_{jk}$ = a$_{jk}$ - $m_{ji}*{a_{ik}}$
     \EndFor
 
+\EndFor
 \EndFor
 \end{algorithmic}
 \end{algorithm}
