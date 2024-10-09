@@ -1,12 +1,17 @@
 \section{Desarrollo}
+
+En esta sección hablaremos en profundidad del \textbf{cómo} implementar los algorimos que presentamos en la sección anterior y los conceptos que hay que tener en cuenta si el lector los quiere implementar para sí.
+
 \subsection{Desarrollo de los Algoritmos}
 
 El lenguaje de programación utilizado para implementar los algoritmos fue Python. De esta forma, para representar a las matrices utilizamos la estructura de datos \textit{array[array[dtype='float32']]}. 
 A su vez, se utilizo la librería Numpy para operaciones sobre matrices, el módulo Timeit para la medición de tiempos, y utilizamos Matplotlib para graficar los experimentos realizados.
 
+Dejamos la el link a nuestra implementaci´ón \cite{Colab} para se pueda seguir la lectura del presente informe con un ejemplo real del c´ódigo. En el mismo se puede ver el c´ódigo fuente como tambi´én, testing y experimentaci´ón que profundizaremos en secciones proximas.
+
 \subsection{Eliminación Gaussiana sin pivoteo}
 
-Basado en el pseudocódigo visto en la teórica \cite{teoEG}, se implemento utilizando Python el algoritmo de eliminación Gausianna sin pivoteo. 
+Basado en el pseudocódigo visto en la teórica \cite{teoEG} como en el libro \cite{Recipes07}, se implemento utilizando Python el algoritmo de eliminación Gausianna sin pivoteo. 
 El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la matriz y el término independiente y devuelve la triangulación de la matriz input \textit{A} concatenada con el término independiente \textit{b}. Observemos también que se verifica que los elementos de la diagonal no queden nulos, si se diera el caso de esta situación se devuelve una excepción. (algoritmo \ref{EG_sinP})
 
 
@@ -36,7 +41,7 @@ El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la
 \end{algorithm}
 
 De esta forma, la complejidad del algoritmo propuesto es $\mathcal{O}$(n$^3$) en el tamaño de la matriz.
-Como mencionamos en la introducción teórica, una vez completada la eliminación hacia adelante, obtenemos una matriz triangular superior. Por lo tanto, podemos resolver el sistema de ecuaciones de manera directa utilizando \textit{backward substitution}, la cual implementamos de la siguiente manera llamando a la función \textit{resolver\_sistema} (algoritmo \ref{backwardSubst})
+Como mencionamos en la introducción teórica (sic \ref{sec:gaussiana}), una vez completada la eliminación hacia adelante, obtenemos una matriz triangular superior. Por lo tanto, podemos resolver el sistema de ecuaciones de manera directa utilizando \textit{backward substitution}, la cual implementamos de la siguiente manera llamando a la función \textit{resolver\_sistema} (algoritmo \ref{backwardSubst})
 
 \begin{algorithm}
 \caption{Backward Substitution}\label{backwardSubst}
@@ -60,13 +65,18 @@ Como mencionamos en la introducción teórica, una vez completada la eliminació
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Eliminación Gaussiana con pivoteo} \label{seccion_EG_pivot}
-La eliminación gaussiana con pivoteo parcial es una variante del algoritmo anterior.
-En este método, la elección del pivote para cada paso de eliminación hace que el algoritmo pueda resolver más problemas. El primer paso es buscar el elemento de mayor magnitud en la columna correspondiente, este elemento se intercambia con el elemento actual de la diagonal principal para garantizar que el pivote seleccionado tenga una magnitud relativamente grande, lo que reduce la posibilidad de errores numéricos debido a divisiones por valores cercanos a cero.
+
+
+\subsection{Eliminación Gaussiana con pivoteo} 
+\label{seccion_EG_pivot}
+
+La eliminación gaussiana con pivoteo parcial es una variante del algoritmo anterior que introdujimos en la secci´ón [\ref{sec:pivoteo}].
+En este método, la elección del pivote para cada paso de eliminación hace que el algoritmo pueda resolver más problemas. El primer paso es buscar el elemento de mayor magnitud en la columna correspondiente, este elemento se intercambia con el elemento actual de la diagonal principal para garantizar que el pivote seleccionado tenga una magnitud relativamente grande, lo que reduce la posibilidad de errores numéricos debido a divisiones por valores cercanos a cero. 
 
 \begin{algorithm}
+\label{alg:pivoteo}
 \caption{Eliminación Gaussiana con pivoteo}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf{EG}(\textbf{in} A : matrix, \textbf{in} b : vector) $\to \textbf{A}$
  
  \State $col \gets A.shape[1]$
@@ -97,46 +107,29 @@ En este método, la elección del pivote para cada paso de eliminación hace que
 \end{algorithmic}
 \end{algorithm}
 
+En nuestro pseudoc´ódigo (algoritmo \ref{alg:pivoteo}) agregamos la l´ógica para buscar una fila que no tenga cero en nuestra columna y que adem´ás sea la de mayor magnitud a partir de la l´ínea 4 hasta la 11. C´ómo explicamos previamente en la secci´ón \ref{sec:sin_solucion}, puede no existir dicha posici´ón y de modo que a´ún as´í tenemos que confirmar que pudimos encontrar un intercambio, y sin´ó lanzar una excepci´ón.
+
 \subsection{Eliminacion Gaussiana para sistemas tridiagonales}
 \label{tridiagonal}
-La eliminación gaussiana para sistemas tridiagonales es una adaptación eficiente de los algoritmos anteriores que aprovecha la estructura especial de las matrices tridiagonales. Estas matrices tienen elementos distintos de cero solo en la diagonal principal y en las dos diagonales adyacentes a esta.
+La eliminación gaussiana para sistemas tridiagonales es una adaptación eficiente de los algoritmos anteriores que aprovecha la estructura especial de las matrices tridiagonales. Estas matrices, como ya explicamos en la secci´ón [\ref{sec:tridiagonal}], tienen elementos distintos de cero solo en la diagonal principal y en las dos diagonales adyacentes a esta.
 \begin{center}
     $a_{i}x_{i-1}+b_{i}x_{i}+c_{i}x_{i+1} = d_{i}$,
 \end{center}
     
-    \[ \begin{bmatrix}
-b_1 & c_1 & & & 0\\
-a_2 & b_2 & c_2 & & & \\
-    & a_3 & b_3 & \ddots & \\
-    &    & \ddots &  \ddots&c_{n-1}\\
-0   &    &   & a_n & b_n
-     \end{bmatrix}
-  \begin{bmatrix}
-        x_{1}\\
-        x_{2} \\
-        x_{3}\\ 
-        \vdots\\ 
-        x_{n}  
- \end{bmatrix}
- =
- \begin{bmatrix}
-     d_{1} \\
-     d_{2} \\
-     d_{3} \\
-     \vdots \\
-     d_{n} \\
- \end{bmatrix}
- \] 
+    
 
  Es así que para el caso de sistemas tridiagonales, el proceso de eliminación gaussiana se simplifica significativamente ya que la gran mayoría de sus elementos es cero, lo que permite reducir la cantidad de operaciones necesarias para triangular la matriz.
+ 
+ Como nota interesante podemos decir que este algoritmo es un caso particular de algoritmos m´ás generales que resuelven los llamados \textbf{Band-Diagonal} \cite{Recipes07-Band} que tienen una estructura similar pero la cantidad de diagonales no nulas es mayor y adem´ás pueden no estar ubicadas de manera sim´étrica como en este caso. En otros libros se puede encontrar tambi´én un pseudoc´ódigo similar al que exploraremos aqu´í con el nombre de algoritmo de \textit{Thomas}. 
 
- \subsubsection{Eliminación Gaussiana para sistemas tridiagonales sin precómputo}
+ %\subsubsection{Eliminación Gaussiana para sistemas tridiagonales sin precómputo}
 
- De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = b, sin necesidad de funciones auxiliares. El pseudocódigo es el siguiente:
+ De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = b, sin necesidad de funciones auxiliares. El pseudocódigo que proponemos se puede ver en el algoritmo [\ref{alg:tridiagonal_simple}.
 
  \begin{algorithm}
+ \label{alg:tridiagonal_simple}
 \caption{EG para tridiagonales sin precómputo}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \State \textbf{tridiag}(\textbf{in} a : vector, \textbf{in} b : vector, \textbf{in} c : vector, \textbf{in} r : vector) $\to \textbf{u}$
 \State n $\gets$ len(b)
 \State u $\gets$ np.zeros(n)
@@ -162,6 +155,8 @@ a_2 & b_2 & c_2 & & & \\
 \end{algorithm}
 
 La ventaja de este algoritmo frente a Eliminación Gaussiana para matrices comunes es la reducción en la complejidad temporal y espacial. Más adelante se desarrolla sobre estos beneficios ( sección \ref{resultados}).
+
+
 
 \subsubsection{Eliminación Gaussiana para sistemas tridiagonales con precómputo}
 
@@ -305,11 +300,3 @@ Los resultados se discutirán en la sección \ref{resultados}, teniendo en cuent
 Por otro lado, a diferencia de la simulación anterior la matriz resultante en 2D no será tridiagonal, sino pentadiagonal, debido a que cada punto de la placa interactúa con sus vecinos en las cuatro direcciones.
 En la sección \ref{resultados} visualizaremos cómo cambia la distribución de temperatura en la placa a medida que pasa el tiempo.
 
-\subsection{Opcionales}
-\label{opcionales}
-
-Como ejercicio opcional se eligió \textit{Utilizar EG con una matriz aumentada con la identidad y obtener la inversa al diagonalizar A}.
-El objetivo entonces, es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Este enfoque se basa en transformar la matriz A en su forma diagonal, y al mismo tiempo, aplicar las mismas operaciones a la matriz identidad para obtener la inversa de A.
-
-El proceso consiste en construir una matriz aumentada que combine A y la matriz identidad I. Luego, mediante la eliminación gaussiana, se van realizando operaciones fila por fila para convertir A en la matriz identidad. Al final de este proceso, la matriz que acompaña a I será la inversa de A.
-Este método es una aplicación práctica del algoritmo de Gauss-Jordan y es especialmente útil porque, a diferencia de otras técnicas, no requiere descomposición LU o factorizaciones complicadas. Lo que hacemos es simplemente aplicar operaciones de fila que son fáciles de implementar.

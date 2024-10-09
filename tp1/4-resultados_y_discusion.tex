@@ -1,6 +1,9 @@
 \section{Resultados}
 \label{resultados}
 
+
+
+\iffalse
 \subsection{Resultado de eliminación Gaussiana sin pivoteo}
 \label{resultados EG}
 
@@ -9,6 +12,9 @@ El pseudocódigo de la función implementada se puede encontrar en la sección \
 
 \subsubsection{Ejercicio 1.2}
 
+Ya est´á dentro de la introducci´ón.
+
+\iffalse
 Si tomamos de ejemplo a la siguiente matriz:
 
 \begin{center}
@@ -21,6 +27,7 @@ $\begin{bmatrix}
 \end{center}
                   
 Es esperado que al procesarla se produzca un error debido a que para resolver el sistema necesitamos intercambiar filas y columnas para llevar la matriz a una forma triangular superior y el algoritmo no lo realiza, pues solo se permite operaciones de multiplicación y suma para reducir los elementos debajo de la diagonal principal.
+\fi
 
 \subsection{Resultado de eliminación Gaussiana con pivoteo}
 \label{resultados EG c/p}
@@ -29,40 +36,15 @@ El pseudocódigo de la función implementada se puede encontrar en la sección \
 
 \subsubsection{Ejercicio 2.2}
 
-Buscamos un ejemplo tal que la matriz de coeficientes sea singular, es decir, no tenga inversa. Esto ocurre cuando alguna fila de la matriz puede expresarse como combinación lineal de las otras filas. Por ejemplo, dada la siguiente matriz:
+Movido a la introducción
 
-\begin{center}
-$\begin{bmatrix}
-1 & -1 & 3\\
--2 & 2 & -6\\
-1 & 5 & 7
-\end{bmatrix}$
-\end{center}
+\fi
 
-La triangulación da como resultado la siguiente matriz:
 
-\begin{center}
-$\begin{bmatrix}
-1 & 2 & 3\\
-0 & 0 & 0\\
-0 & 1 & 2
-\end{bmatrix}$
-\end{center}
 
-Esta ecuación solo tiene resultado cuando b$_2$ es igual a 0. En ese caso tiene infinitas soluciones. Caso contrario, no existe solución.
 
-Otro ejemplo, es tener una matriz tal que la primera columna tenga todos sus elementos iguales a 0. El problema aquí es que el primer elemento de la diagonal principal (posición [0,0]) es 0, lo que significa que no se puede usar como pivote.
 
-\begin{center}
-$\begin{bmatrix}
-0 & 1 & -1 & 3\\
-0 & -0.5 & 0 & 0\\
-0 & 1 & -2 & 4\\
-0 & -1 & 2 & -3
-\end{bmatrix}$
-\end{center}
-
-\subsubsection{Ejercicio 2.3}
+\subsection{Ejercicio 2.3}
 
 Se tiene el sistema de ecuaciones lineales con A y b igual a:
 
