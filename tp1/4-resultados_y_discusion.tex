@@ -82,47 +82,59 @@ El gráfico a continuación muestra la comparación entre el error absoluto vs $
 
 Como podemos observar, el error numérico se encuentra delimitado con tope inferior y superior para cada $\epsilon$ y a menores $\epsilon$ el error numérico en la solución es mas grande y decrece a medida que aumenta $\epsilon$. De la misma forma, el error numérico para 64 bits es varios ordenes de magnitud más chico que para 32 bits, ya que se aumenta la precisión en los cálculos.
 
-\subsection{Resultado Verificación de la implementación}
-\label{resultados derivada}
-Realizamos el cálculo de la derivada segunda de manera discreta para las tres funciones especificadas por la cátedra utilizando la implementación de eliminación Gaussiana para un sistema tridiagonal.
-Se generaron los vectores d$\_vect\_a$, d$\_vec\_b$  y d$\_vec\_c$ que representan las funciones que se encuentran en la sección \ref{tridiagonal} y se calcularon las segundas derivadas para los tres casos.
-Con estos resultados, se creó un único gráfico que se muestra en la siguiente Figura \ref{result_laplaciano} obteniendo el resultado esperado.
 
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.45]{./img/resultado_tridiag}}
-\caption{Resultado de las funciones}
-\label{result_laplaciano}
-\end{figure}
 
-Analizando con mayor profundidad cada función:\par
-\begin{enumerate}
-    \item[a)] La derivada segunda de la función (a) es 0 para todo x distinto a $i = n/2 + 1$. Luego, la derivada primera de la función (a) es constante para todo x $\not =$ i,lo que implica que la función es lineal para todo x $\not =$ i. Por lo que i es un punto de inflexión. Como la derivada segunda en i es positiva, la función tiene que ser cóncava para los positivos. Esta función descripta es coherente con la figura graficada.
 
-    \item[b)] La derivada segunda de la función (b) es $\frac{4}{n^2}$ para todo x. Entonces, la derivada primera es lineal para todo x, lo que implica que la función es cuadrática para todo x. La función graficada se corresponde con una cuadrática.
 
-    \item[c)] La derivada segunda de la función (c) es una función lineal para todo x. Esto significa que la derivada primera es cuadrática, implicando que la función debe ser un polinomio de grado tres (cúbica). La función graficada se corresponde con una cúbica.
-\end{enumerate}
+\iffalse
+    \subsection{Resultado Verificación de la implementación}
+    \label{resultados derivada}
+    Realizamos el cálculo de la derivada segunda de manera discreta para las tres funciones especificadas por la cátedra utilizando la implementación de eliminación Gaussiana para un sistema tridiagonal.
+    Se generaron los vectores d$\_vect\_a$, d$\_vec\_b$  y d$\_vec\_c$ que representan las funciones que se encuentran en la sección \ref{tridiagonal} y se calcularon las segundas derivadas para los tres casos.
+    Con estos resultados, se creó un único gráfico que se muestra en la siguiente Figura \ref{result_laplaciano} obteniendo el resultado esperado.
 
-\subsection{Resultado Tiempos de cómputo}
-\label{resultados tiempo}
-\subsubsection{Ejercicio 5.1}
-El objetivo de este ejercicio es obtener de forma experimental la complejidad temporal de los algoritmos utilizados en los puntos anteriores: eliminación Gaussiana con pivoteo, eliminación Gaussiana para matrices tridiagonales estándar y con precomputo. Las complejidades temporales teóricas de los algoritmos son:
+    \begin{figure}[H]
+    \centerline{\includegraphics[scale=0.45]{./img/resultado_tridiag}}
+    \caption{Resultado de las funciones}
+    \label{result_laplaciano}
+    \end{figure}
 
-\begin{itemize}
-    \item Eliminación Gaussiana con pivoteo: $O(n^{3})$
-    \item Eliminación Gaussiana para matrices tridiagonales estándar: $O(n)$
-    \item Eliminación Gaussiana para matrices tridiagonales con precomputo: $O(n)$
-\end{itemize}
+    Analizando con mayor profundidad cada función:\par
+    \begin{enumerate}
+        \item[a)] La derivada segunda de la función (a) es 0 para todo x distinto a $i = n/2 + 1$. Luego, la derivada primera de la función (a) es constante para todo x $\not =$ i,lo que implica que la función es lineal para todo x $\not =$ i. Por lo que i es un punto de inflexión. Como la derivada segunda en i es positiva, la función tiene que ser cóncava para los positivos. Esta función descripta es coherente con la figura graficada.
 
-El algoritmo de Eliminación Gaussiana con pivoteo tiene un triple for, necesario para la triangulación de la matriz A. Lo que genera que la complejidad temporal sea cúbica. En cambio los algoritmos de las matrices tridiagonales trabajan a nivel vectorial, modificando los valores de los vectores b y c. Lo que genera que la complejidad temporal sea lineal.
+        \item[b)] La derivada segunda de la función (b) es $\frac{4}{n^2}$ para todo x. Entonces, la derivada primera es lineal para todo x, lo que implica que la función es cuadrática para todo x. La función graficada se corresponde con una cuadrática.
 
-Para este ejercicio se definió \textit{A} como la matriz Laplaciana, es decir, aquella matriz que tiene a -2 como elementos de la diagonal y a 1 como los elementos de las dos subdiagonales.
+      \item[c)] La derivada segunda de la función (c) es una función lineal para todo x. Esto significa que la derivada primera es cuadrática, implicando que la función debe ser un polinomio de grado tres (cúbica). La función graficada se corresponde con una cúbica.
+    \end{enumerate}
+\fi    
+    
+    
+    
+    
 
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.45]{./img/tiempos_EGsinVsConPivoteo.png}}
-\caption{Tiempo de computo para EG con pivoteo y EG en un sistema tridiagonal}
-\label{result_ej5}
-\end{figure}
+\iffalse
+    \subsection{Resultado Tiempos de cómputo}
+    \label{resultados tiempo}
+    \subsubsection{Ejercicio 5.1}
+    El objetivo de este ejercicio es obtener de forma experimental la complejidad temporal de los algoritmos utilizados en los puntos anteriores: eliminación Gaussiana con pivoteo, eliminación Gaussiana para matrices tridiagonales estándar y con precomputo. Las complejidades temporales teóricas de los algoritmos son:
+
+    \begin{itemize}
+        \item Eliminación Gaussiana con pivoteo: $O(n^{3})$
+        \item Eliminación Gaussiana para matrices tridiagonales estándar: $O(n)$
+        \item Eliminación Gaussiana para matrices tridiagonales con precomputo: $O(n)$
+    \end{itemize}
+
+    El algoritmo de Eliminación Gaussiana con pivoteo tiene un triple for, necesario para la triangulación de la matriz A. Lo que genera que la complejidad temporal sea cúbica. En cambio los algoritmos de las matrices tridiagonales trabajan a nivel vectorial, modificando los valores de los vectores b y c. Lo que genera que la complejidad temporal sea lineal.
+
+    Para este ejercicio se definió \textit{A} como la matriz Laplaciana, es decir, aquella matriz que tiene a -2 como elementos de la diagonal y a 1 como los elementos de las dos subdiagonales.
+
+    \begin{figure}[H]
+    \centerline{\includegraphics[scale=0.45]{./img/tiempos_EGsinVsConPivoteo.png}}
+    \caption{Tiempo de computo para EG con pivoteo y EG en un sistema tridiagonal}
+    \label{result_ej5}
+    \end{figure}
+\fi
 
 \subsubsection{Ejercicio 5.2}
 

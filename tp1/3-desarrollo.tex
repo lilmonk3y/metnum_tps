@@ -11,7 +11,7 @@ Dejamos la el link a nuestra implementaci´ón \cite{Colab} para se pueda seguir
 
 \subsection{Eliminación Gaussiana sin pivoteo}
 
-Basado en el pseudocódigo visto en la teórica \cite{teoEG} como en el libro \cite{Recipes07}, se implemento utilizando Python el algoritmo de eliminación Gausianna sin pivoteo. 
+Basado tanto en el pseudocódigo visto en la teórica \cite{teoEG} como en el libro \cite{Recipes07}, se implemento utilizando Python el algoritmo de eliminación Gausianna sin pivoteo. 
 El siguiente pseudocódigo describe los pasos seguidos. Éste toma como input la matriz y el término independiente y devuelve la triangulación de la matriz input \textit{A} concatenada con el término independiente \textit{b}. Observemos también que se verifica que los elementos de la diagonal no queden nulos, si se diera el caso de esta situación se devuelve una excepción. (algoritmo \ref{EG_sinP})
 
 
@@ -215,7 +215,7 @@ Como mencionamos anteriormente (sección \ref{Intro_laplaciano}), para el caso u
 
 u$_{i-1}$ - 2u$_{i}$ + u$_{i+1}$ = d$_{i}$
 
-Esta ecuación forma un sistema matricial como se muestra en la figura \ref{laplaciano}. Esta matriz es tridiagonal, donde siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
+Esta ecuación forma un sistema matricial como se muestra en la figura \ref{laplaciano}. Esta matriz es tridiagonal y siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
 
 \begin{itemize}
     \item a: vector de valores 1.
@@ -249,8 +249,8 @@ Esta ecuación forma un sistema matricial como se muestra en la figura \ref{lapl
      \caption{Forma matricial}\label{laplaciano}
 \end{figure}
 Por esta estructura,  el algoritmo de eliminación gaussiana para tridiagonales puede aplicarse eficientemente resolviendo el sistema de ecuaciones resultantes de la discretización. Además, como la matriz es diagonal dominante, no es necesario el pivoteo pues no hay riesgo de división por cero. 
-Para resolver este inciso se modelaron los tres vectores $d$ que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$ utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
-Los resultados obtenidos se pueden ver en la sección \ref{resultados} 
+
+De esta forma, se modelaron los tres vectores $d$ a los cuales nombramos como d$\_vect\_a$, d$\_vec\_b$  y d$\_vec\_c$, que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$  y se calcularon las segundas derivadas para los tres casos utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
 
 \begin{enumerate}[label=\alph*)] % (a), (b), (c), ...
 \label{ec_ej4}
@@ -266,12 +266,53 @@ Los resultados obtenidos se pueden ver en la sección \ref{resultados}
 
 \end{enumerate}
 
+
+Con estos resultados, se creó un único gráfico que se muestra en la siguiente Figura \ref{result_laplaciano} obteniendo el resultado esperado.
+
+\begin{figure}[H]
+\centerline{\includegraphics[scale=0.45]{./img/resultado_tridiag}}
+\caption{Resultado de las funciones}
+\label{result_laplaciano}
+\end{figure}
+
+Analizando con mayor profundidad cada función:\par
+\begin{enumerate}
+    \item[a)] La derivada segunda de la función (a) es 0 para todo x distinto a $i = n/2 + 1$. Luego, la derivada primera de la función (a) es constante para todo x $\not =$ i,lo que implica que la función es lineal para todo x $\not =$ i. Por lo que i es un punto de inflexión. Como la derivada segunda en i es positiva, la función tiene que ser cóncava para los positivos. Esta función descripta es coherente con la figura graficada.
+
+    \item[b)] La derivada segunda de la función (b) es $\frac{4}{n^2}$ para todo x. Entonces, la derivada primera es lineal para todo x, lo que implica que la función es cuadrática para todo x. La función graficada se corresponde con una cuadrática.
+
+    \item[c)] La derivada segunda de la función (c) es una función lineal para todo x. Esto significa que la derivada primera es cuadrática, implicando que la función debe ser un polinomio de grado tres (cúbica). La función graficada se corresponde con una cúbica.
+\end{enumerate}
+
+
+
 \subsection{Tiempos de cómputo}
-Para este inciso, se generó para cada tamaño, las matrices y vectores correspondientes, luego se ejecutaron los algoritmos de eliminación gaussiana con pivoteo y el de eliminación gaussiana para matrices tridiagonales, estándar y el de precomputo, para dimensiones de potencia de dos (2$^k$). Este procedimiento se repitió 10 veces, tomando el tiempo mínimo de cada una de ellas. El propósito de estas iteraciones es mitigar el posible efecto de las variaciones causadas por la organización del computador (posición de las variables en memoria por ejemplo).
+Como explicamos anteriormente, los diferentes algoritmos tienen complejidades computacionales muy distintas, lo que afecta significativamente el tiempo de ejecución y los recursos necesarios para resolver un problema.
 
-Lo esperado es que el algoritmo tridiagonal sea notablemente más rápido a comparación del algoritmo de eliminación gaussiana con pivoteo debido a que este último tiene una complejidad cúbica en relación con el tamaño de la matriz, mientras que el primero puede resolverse de manera lineal.
+En el caso de la eliminación gaussiana, el algoritmo con pivoteo tiene una complejidad cúbica ($\mathcal{O}$(n$^3$)), lo que significa que el tiempo de ejecución crece rápidamente a medida que aumenta el tamaño de la matriz. Por otro lado, los algoritmos diseñados específicamente para matrices con estructura especial, como el caso de las matrices tridiagonales, pueden reducir esa complejidad a $\mathcal{O}$(n), lo que implica una mejora considerable en términos de rendimiento.Por lo tanto, Lo esperado es que el algoritmo tridiagonal sea notablemente más rápido a comparación del algoritmo de eliminación gaussiana con pivoteo
 
-Los resultados obtenidos se pueden ver en la sección \ref{resultados}
+Para evaluar el rendimiento de los distintos algoritmos de eliminación gaussiana, se generaron matrices y vectores correspondientes a cada tamaño seleccionado. Posteriormente, se implementaron los algoritmos de eliminación gaussiana con pivoteo, eliminación gaussiana para matrices tridiagonales, tanto en su versión estándar como en la versión con precomputo, para dimensiones que corresponden a potencias de dos (2$^k$). Este proceso fue repetido 10 veces, registrando el tiempo mínimo de ejecución en cada iteración. Esta repetición busca mitigar el posible efecto de las variaciones causadas por la organización del computador (posición de las variables en memoria por ejemplo).
+
+Considerando, las complejidades temporales teóricas de los algoritmos:
+
+\begin{itemize}
+    \item Eliminación Gaussiana con pivoteo: $O(n^{3})$
+    \item Eliminación Gaussiana para matrices tridiagonales estándar: $O(n)$
+    \item Eliminación Gaussiana para matrices tridiagonales con precomputo: $O(n)$
+\end{itemize}
+
+
+Definimos \textit{A} como la matriz Laplaciana, es decir, aquella matriz que tiene a -2 como elementos de la diagonal y a 1 como los elementos de las dos subdiagonales. Obtenemos el siguiente resultado (figura \ref{result_ej5})
+
+\begin{figure}[H]
+\centerline{\includegraphics[scale=0.45]{./img/tiempos_EGsinVsConPivoteo.png}}
+\caption{Tiempo de computo para EG con pivoteo y EG en un sistema tridiagonal}
+\label{result_ej5}
+\end{figure}
+
+Como era esperado, como los algoritmos de las matrices tridiagonales trabajan a nivel vectorial, modificando los valores de los vectores b y c, la complejidad temporal mejora.
+
+%Los resultados obtenidos se pueden ver en la sección \ref{resultados}
 
 
 \subsection{Simulación de difusión}
