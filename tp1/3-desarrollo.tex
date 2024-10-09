@@ -1,6 +1,6 @@
 \section{Desarrollo}
 
-En esta sección hablaremos en profundidad del \textbf{cómo} implementar los algorimos que presentamos en la sección anterior y los conceptos que hay que tener en cuenta si el lector los quiere implementar para sí.
+En esta sección hablaremos en profundidad del \textbf{cómo} implementar los algoritmos que presentamos en la sección anterior y los conceptos que hay que tener en cuenta si el lector los quiere implementar para sí.
 
 \subsection{Desarrollo de los Algoritmos}
 
@@ -209,135 +209,149 @@ Sean \_gam y \_bet variables globales:
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Verificación de la implementación}
-Para probar nuestra implementación de sistema tridiagonal se nos pidió resolver una serie de ecuaciones diferenciales. Debemos encontrar \textit{u} para el problema $\frac{\partial^2}{\partial x^2}u = d$ utilizando la matriz tridiagonal del operador laplaciano.
-Como mencionamos anteriormente (sección \ref{Intro_laplaciano}), para el caso unidimensional la operación discreta de $\frac{\partial^2}{\partial x^2}u = d$ está dada por:
 
-u$_{i-1}$ - 2u$_{i}$ + u$_{i+1}$ = d$_{i}$
 
-Esta ecuación forma un sistema matricial como se muestra en la figura \ref{laplaciano}. Esta matriz es tridiagonal y siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
 
-\begin{itemize}
-    \item a: vector de valores 1.
-    \item b: vector de valores -2.
-    \item c: vector de valores 1.
-\end{itemize}
 
-\begin{figure}[H]
-    \[ \begin{bmatrix}
--2 & 1 & & & 0\\
-1 & -2 & 1 & & & \\
-    & 1 & -2 & \ddots & \\
-    &    & \ddots &  \ddots & 1\\
-0   &    &   & 1 & -2
-     \end{bmatrix}
-     \begin{bmatrix}
-           u_{1}\\
-           u_{2} \\
-           u_{3}\\ 
+\iffalse
+
+    \subsection{Verificación de la implementación}
+    Para probar nuestra implementación de sistema tridiagonal se nos pidió resolver una serie de ecuaciones diferenciales. Debemos encontrar \textit{u} para el problema $\frac{\partial^2}{\partial x^2}u = d$ utilizando la matriz tridiagonal del operador laplaciano.
+    Como mencionamos anteriormente (sección \ref{Intro_laplaciano}), para el caso unidimensional la operación discreta de $\frac{\partial^2}{\partial x^2}u = d$ está dada por:
+
+    u$_{i-1}$ - 2u$_{i}$ + u$_{i+1}$ = d$_{i}$
+
+    Esta ecuación forma un sistema matricial como se muestra en la figura \ref{laplaciano}. Esta matriz es tridiagonal y siguiendo la estructura de la matriz de la sección \ref{tridiagonal} toma valores:
+
+    \begin{itemize}
+        \item a: vector de valores 1.
+        \item b: vector de valores -2.
+        \item c: vector de valores 1.
+    \end{itemize}
+
+    \begin{figure}[H]
+        \[ \begin{bmatrix}
+    -2 & 1 & & & 0\\
+    1 & -2 & 1 & & & \\
+        & 1 & -2 & \ddots & \\
+        &    & \ddots &  \ddots & 1\\
+    0   &    &   & 1 & -2
+         \end{bmatrix}
+         \begin{bmatrix}
+               u_{1}\\
+               u_{2} \\
+               u_{3}\\ 
+               \vdots\\ 
+               u_{n}  
+         \end{bmatrix}
+          =
+         \begin{bmatrix}
+              d_{1} \\
+              d_{2}\\
+              d_{3}\\
            \vdots\\ 
-           u_{n}  
-     \end{bmatrix}
-      =
-     \begin{bmatrix}
-          d_{1} \\
-          d_{2}\\
-          d_{3}\\
-         \vdots\\ 
-         d_{n}  
-     \end{bmatrix} \]
-     \caption{Forma matricial}\label{laplaciano}
-\end{figure}
-Por esta estructura,  el algoritmo de eliminación gaussiana para tridiagonales puede aplicarse eficientemente resolviendo el sistema de ecuaciones resultantes de la discretización. Además, como la matriz es diagonal dominante, no es necesario el pivoteo pues no hay riesgo de división por cero. 
+           d_{n}  
+        \end{bmatrix} \]
+        \caption{Forma matricial}\label{laplaciano}
+    \end{figure}
+    Por esta estructura,  el algoritmo de eliminación gaussiana para tridiagonales puede aplicarse eficientemente resolviendo el sistema de ecuaciones resultantes de la discretización. Además, como la matriz es diagonal dominante, no es necesario el pivoteo pues no hay riesgo de división por cero. 
+    
+    De esta forma, se modelaron los tres vectores $d$ a los cuales nombramos como d$\_vect\_a$, d$\_vec\_b$  y d$\_vec\_c$, que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$  y se calcularon las segundas derivadas para los tres casos utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
+    
+    \begin{enumerate}[label=\alph*)] % (a), (b), (c), ...
+    \label{ec_ej4}
+    \item d$_{i}$ = 
+       $\begin{cases}
+         0\\
+          \frac{4}{n} & i=\lfloor \frac{n}{2} \rfloor   +1
+      \end{cases}$
 
-De esta forma, se modelaron los tres vectores $d$ a los cuales nombramos como d$\_vect\_a$, d$\_vec\_b$  y d$\_vec\_c$, que representan las ecuaciones requeridas que se pueden ver a continuación con parámetro $n=101$  y se calcularon las segundas derivadas para los tres casos utilizando el algoritmo que se encuentra en la sección \ref{tridiagonal}.
+    \item d$_{i}$ = $\frac{4}{n^{2}}$
 
-\begin{enumerate}[label=\alph*)] % (a), (b), (c), ...
-\label{ec_ej4}
-\item d$_{i}$ = 
-    $\begin{cases}
-      0\\
-      \frac{4}{n} & i=\lfloor \frac{n}{2} \rfloor   +1
-    \end{cases}$
+    \item d$_{i}$ = $\frac{-1+2i}{(n-1)}\frac{12}{n^{2}}$
 
-\item d$_{i}$ = $\frac{4}{n^{2}}$
-
-\item d$_{i}$ = $\frac{-1+2i}{(n-1)}\frac{12}{n^{2}}$
-
-\end{enumerate}
+    \end{enumerate}
 
 
-Con estos resultados, se creó un único gráfico que se muestra en la siguiente Figura \ref{result_laplaciano} obteniendo el resultado esperado.
+    Con estos resultados, se creó un único gráfico que se muestra en la siguiente Figura \ref{result_laplaciano} obteniendo el resultado esperado.
 
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.45]{./img/resultado_tridiag}}
-\caption{Resultado de las funciones}
-\label{result_laplaciano}
-\end{figure}
+    \begin{figure}[H]
+    \centerline{\includegraphics[scale=0.45]{./img/resultado_tridiag}}
+    \caption{Resultado de las funciones}
+    \label{result_laplaciano}
+    \end{figure}
 
-Analizando con mayor profundidad cada función:\par
-\begin{enumerate}
-    \item[a)] La derivada segunda de la función (a) es 0 para todo x distinto a $i = n/2 + 1$. Luego, la derivada primera de la función (a) es constante para todo x $\not =$ i,lo que implica que la función es lineal para todo x $\not =$ i. Por lo que i es un punto de inflexión. Como la derivada segunda en i es positiva, la función tiene que ser cóncava para los positivos. Esta función descripta es coherente con la figura graficada.
+    Analizando con mayor profundidad cada función:\par
+    \begin{enumerate}
+        \item[a)] La derivada segunda de la función (a) es 0 para todo x distinto a $i = n/2 + 1$. Luego, la derivada primera de la función (a) es constante para todo x $\not =$ i,lo que implica que la función es lineal para todo x $\not =$ i. Por lo que i es un punto de inflexión. Como la derivada segunda en i es positiva, la función tiene que ser cóncava para los positivos. Esta función descripta es coherente con la figura graficada.
+    
+        \item[b)] La derivada segunda de la función (b) es $\frac{4}{n^2}$ para todo x. Entonces, la derivada primera es lineal para todo x, lo que implica que la función es cuadrática para todo x. La función graficada se corresponde con una cuadrática.
 
-    \item[b)] La derivada segunda de la función (b) es $\frac{4}{n^2}$ para todo x. Entonces, la derivada primera es lineal para todo x, lo que implica que la función es cuadrática para todo x. La función graficada se corresponde con una cuadrática.
-
-    \item[c)] La derivada segunda de la función (c) es una función lineal para todo x. Esto significa que la derivada primera es cuadrática, implicando que la función debe ser un polinomio de grado tres (cúbica). La función graficada se corresponde con una cúbica.
-\end{enumerate}
+        \item[c)] La derivada segunda de la función (c) es una función lineal para todo x. Esto significa que la derivada primera es cuadrática, implicando que la función debe ser un polinomio de grado tres (cúbica). La función graficada se corresponde con una cúbica.
+    \end{enumerate}
 
 
 
-\subsection{Tiempos de cómputo}
-Como explicamos anteriormente, los diferentes algoritmos tienen complejidades computacionales muy distintas, lo que afecta significativamente el tiempo de ejecución y los recursos necesarios para resolver un problema.
+    \subsection{Tiempos de cómputo}
+    Como explicamos anteriormente, los diferentes algoritmos tienen complejidades computacionales muy distintas, lo que afecta significativamente el tiempo de ejecución y los recursos necesarios para resolver un problema.
 
-En el caso de la eliminación gaussiana, el algoritmo con pivoteo tiene una complejidad cúbica ($\mathcal{O}$(n$^3$)), lo que significa que el tiempo de ejecución crece rápidamente a medida que aumenta el tamaño de la matriz. Por otro lado, los algoritmos diseñados específicamente para matrices con estructura especial, como el caso de las matrices tridiagonales, pueden reducir esa complejidad a $\mathcal{O}$(n), lo que implica una mejora considerable en términos de rendimiento.Por lo tanto, Lo esperado es que el algoritmo tridiagonal sea notablemente más rápido a comparación del algoritmo de eliminación gaussiana con pivoteo
+    En el caso de la eliminación gaussiana, el algoritmo con pivoteo tiene una complejidad cúbica ($\mathcal{O}$(n$^3$)), lo que significa que el tiempo de ejecución crece rápidamente a medida que aumenta el tamaño de la matriz. Por otro lado, los algoritmos diseñados específicamente para matrices con estructura especial, como el caso de las matrices tridiagonales, pueden reducir esa complejidad a $\mathcal{O}$(n), lo que implica una mejora considerable en términos de rendimiento.Por lo tanto, Lo esperado es que el algoritmo tridiagonal sea notablemente más rápido a comparación del algoritmo de eliminación gaussiana con pivoteo
 
-Para evaluar el rendimiento de los distintos algoritmos de eliminación gaussiana, se generaron matrices y vectores correspondientes a cada tamaño seleccionado. Posteriormente, se implementaron los algoritmos de eliminación gaussiana con pivoteo, eliminación gaussiana para matrices tridiagonales, tanto en su versión estándar como en la versión con precomputo, para dimensiones que corresponden a potencias de dos (2$^k$). Este proceso fue repetido 10 veces, registrando el tiempo mínimo de ejecución en cada iteración. Esta repetición busca mitigar el posible efecto de las variaciones causadas por la organización del computador (posición de las variables en memoria por ejemplo).
+    Para evaluar el rendimiento de los distintos algoritmos de eliminación gaussiana, se generaron matrices y vectores correspondientes a cada tamaño seleccionado. Posteriormente, se implementaron los algoritmos de eliminación gaussiana con pivoteo, eliminación gaussiana para matrices tridiagonales, tanto en su versión estándar como en la versión con precomputo, para dimensiones que corresponden a potencias de dos (2$^k$). Este proceso fue repetido 10 veces, registrando el tiempo mínimo de ejecución en cada iteración. Esta repetición busca mitigar el posible efecto de las variaciones causadas por la organización del computador (posición de las variables en memoria por ejemplo).
 
-Considerando, las complejidades temporales teóricas de los algoritmos:
+    Considerando, las complejidades temporales teóricas de los algoritmos:
 
-\begin{itemize}
-    \item Eliminación Gaussiana con pivoteo: $O(n^{3})$
-    \item Eliminación Gaussiana para matrices tridiagonales estándar: $O(n)$
-    \item Eliminación Gaussiana para matrices tridiagonales con precomputo: $O(n)$
-\end{itemize}
-
-
-Definimos \textit{A} como la matriz Laplaciana, es decir, aquella matriz que tiene a -2 como elementos de la diagonal y a 1 como los elementos de las dos subdiagonales. Obtenemos el siguiente resultado (figura \ref{result_ej5})
-
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.45]{./img/tiempos_EGsinVsConPivoteo.png}}
-\caption{Tiempo de computo para EG con pivoteo y EG en un sistema tridiagonal}
-\label{result_ej5}
-\end{figure}
-
-Como era esperado, como los algoritmos de las matrices tridiagonales trabajan a nivel vectorial, modificando los valores de los vectores b y c, la complejidad temporal mejora.
-
-%Los resultados obtenidos se pueden ver en la sección \ref{resultados}
+    \begin{itemize}
+       \item Eliminación Gaussiana con pivoteo: $O(n^{3})$
+        \item Eliminación Gaussiana para matrices tridiagonales estándar: $O(n)$
+        \item Eliminación Gaussiana para matrices tridiagonales con precomputo: $O(n)$
+    \end{itemize}
 
 
-\subsection{Simulación de difusión}
+    Definimos \textit{A} como la matriz Laplaciana, es decir, aquella matriz que tiene a -2 como elementos de la diagonal y a 1 como los elementos de las dos subdiagonales. Obtenemos el siguiente resultado (figura \ref{result_ej5})
 
-Para expresar la ecuación de difusión se considera el incremento para el paso \textit{k}, $u^k - u^{k-1}$ como una
-fracción ($\alpha$) del operador laplaciano aplicado a $u^{k-1}$ (ecuación explícita) y a $u^{k}$ (ecuación implícita):
-\begin{center}
-  $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k-1)} - 2u_i^{(k-1)} + u_{i+1}^{(k-1)}) - Eq (3)$
-\end{center}
+    \begin{figure}[H]
+    \centerline{\includegraphics[scale=0.45]{./img/tiempos_EGsinVsConPivoteo.png}}
+    \caption{Tiempo de computo para EG con pivoteo y EG en un sistema tridiagonal}
+    \label{result_ej5}
+    \end{figure}
 
-\begin{center}
-  $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k)} - 2u_i^{(k)} + u_{i+1}^{(k)}) - Eq (4)$
-\end{center}
+    Como era esperado, como los algoritmos de las matrices tridiagonales trabajan a nivel vectorial, modificando los valores de los vectores b y c, la complejidad temporal mejora.
 
-Reordenando los términos, obtenemos una solución de forma explícita para la ecuación (3). Ésta responde a la forma $u^{(k)} = A \times u^{(k-1)}$. Por otro lado, reordenando los términos de la ecuación (4) obtenemos una solución de forma implícita: A$\times u^{(k)}$ = $u^{(k-1)}$. De esta forma, para obtener la evolución, resolvemos el sistema de ecuaciones para cada paso $k$.
-Utilizando la última formulación, logramos generar soluciones estables para todos los valores.
+    Por otro lado, realizamos la comparación entre la implementación de EG para un sistema tridiagonal y su variante con precómputo. En la figura \ref{result_ej5_2do} podemos observar claramente el beneficio en el tiempo de ejecución al utilizar la segunda variante del algoritmo, especialmente cuando la cantidad de sistemas a resolver es crecientemente superior a la dimensión del sistema.
 
-Para la solución implícita podemos notar que se genera un sistema tridiagonal, lo que nos permite utilizar el algoritmo de eliminación Gaussiana para sistemas tridiagonales. La eliminación Gaussiana no requiere pivoteo por la estructura de la matriz de derivada segunda. La triangulación finaliza en una matriz donde los elementos de la diagonal principal son: $a_{ii} = - \frac{i+1}{i}$. 
-Es así que, como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
-Los resultados se discutirán en la sección \ref{resultados}, teniendo en cuenta que los parámetros utilizados fueron n = 101, r = 10, m = 1000.
+    \begin{figure}[H]
+    \centerline{\includegraphics[scale=0.45]{./img/tiempos_tridiagConVsSinP.png}}
+    \caption{Tiempo de computo para Eliminación Gaussiana tridiagonal estandar vs. precomputada}
+    \label{result_ej5_2do}
+    \end{figure}
+
+    %Los resultados obtenidos se pueden ver en la sección \ref{resultados}
 
 
-\subsubsection{Simulación de difusión 2D}
- El objetivo es implementar una simulación de cómo se difunde el calor en una placa de 15x15 unidades. El calor se origina en un punto central con una temperatura fija de 100 unidades, mientras que los bordes de la placa se mantienen siempre a 0. Este tipo de simulaciones se basa en la ecuación de difusión, que modela cómo el calor se dispersa en el tiempo.
- Para esto utilizaremos el método implícito, lo que implica que cada paso de tiempo requiere resolver un sistema de ecuaciones lineales. Esto nos garantiza estabilidad, incluso si el coeficiente de difusión $\alpha$ = 0.1 varía.
-Por otro lado, a diferencia de la simulación anterior la matriz resultante en 2D no será tridiagonal, sino pentadiagonal, debido a que cada punto de la placa interactúa con sus vecinos en las cuatro direcciones.
-En la sección \ref{resultados} visualizaremos cómo cambia la distribución de temperatura en la placa a medida que pasa el tiempo.
+    \subsection{Simulación de difusión}
 
+    Para expresar la ecuación de difusión se considera el incremento para el paso \textit{k}, $u^k - u^{k-1}$ como una fracción ($\alpha$) del operador laplaciano aplicado a $u^{k-1}$ (ecuación explícita) y a $u^{k}$ (ecuación implícita):
+    \begin{center}
+      $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k-1)} - 2u_i^{(k-1)} + u_{i+1}^{(k-1)}) - Eq (3)$
+    \end{center}
+
+    \begin{center}
+      $u_i^{(k)} - u_i^{(k-1)}$ = $\alpha(u_{i-1}^{(k)} - 2u_i^{(k)} + u_{i+1}^{(k)}) - Eq (4)$
+    \end{center}
+
+    Reordenando los términos, obtenemos una solución de forma explícita para la ecuación (3). Ésta responde a la forma $u^{(k)} = A \times u^{(k-1)}$. Por otro lado, reordenando los términos de la ecuación (4) obtenemos una solución de forma implícita: A$\times u^{(k)}$ = $u^{(k-1)}$. De esta forma, para obtener la evolución, resolvemos el sistema de ecuaciones para cada paso $k$.
+    Utilizando la última formulación, logramos generar soluciones estables para todos los valores.
+
+    Para la solución implícita podemos notar que se genera un sistema tridiagonal, lo que nos permite utilizar el algoritmo de eliminación Gaussiana para sistemas tridiagonales. La eliminación Gaussiana no requiere pivoteo por la estructura de la matriz de derivada segunda. La triangulación finaliza en una matriz donde los elementos de la diagonal principal son: $a_{ii} = - \frac{i+1}{i}$. 
+    Es así que, como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
+    Los resultados se discutirán en la sección \ref{resultados}, teniendo en cuenta que los parámetros utilizados fueron n = 101, r = 10, m = 1000.
+
+
+    \subsubsection{Simulación de difusión 2D}
+     El objetivo es implementar una simulación de cómo se difunde el calor en una placa de 15x15 unidades. El calor se origina en un punto central con una temperatura fija de 100 unidades, mientras que los bordes de la placa se mantienen siempre a 0. Este tipo de simulaciones se basa en la ecuación de difusión, que modela cómo el calor se dispersa en el tiempo.
+     Para esto utilizaremos el método implícito, lo que implica que cada paso de tiempo requiere resolver un sistema de ecuaciones lineales. Esto nos garantiza estabilidad, incluso si el coeficiente de difusión $\alpha$ = 0.1 varía.
+    Por otro lado, a diferencia de la simulación anterior la matriz resultante en 2D no será tridiagonal, sino pentadiagonal, debido a que cada punto de la placa interactúa con sus vecinos en las cuatro direcciones.
+    En la sección \ref{resultados} visualizaremos cómo cambia la distribución de temperatura en la placa a medida que pasa el tiempo.
+
+\fi
