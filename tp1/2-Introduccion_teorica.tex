@@ -5,7 +5,7 @@
 
 Los sistemas de ecuaciones lineales pueden ser representados en forma matricial como \textit{Ax=b}, donde A representa la matriz de los coeficientes que acompañan a cada una de las incógnitas, \textit{x} representa al vector de incógnitas y \textit{b} al vector de términos independientes. Para los sistemas cuadrados, donde hay misma cantidad de incógnitas que de ecuaciones, el método de eliminación Gaussiana busca darle valor a los coeficientes del vector de incógnitas y resolver el sistema lineal. El modelado de sistemas de ecuaciones con matrices se extiende a una amplia gama de disciplinas como los gráficos por computadora, las finanzas y las ingenierías, entre otras, las cuales no serían como las conocemos sin este objeto y las operaciones que podemos hacer con él. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.3\linewidth}
         \includegraphics[width=\linewidth]{img/sistema_de_ecuaciones.png}
@@ -107,7 +107,7 @@ Nuestro objetivo entonces, es calcular la matriz inversa de una matriz A utiliza
 
 El proceso consiste en construir una matriz aumentada que combine A y la matriz identidad I. Luego, mediante la eliminación gaussiana, se van realizando operaciones fila por fila para convertir A en la matriz identidad. Al final de este proceso, la matriz que acompaña a I será la inversa de A. Se puede ver un ejemplo de como se calcula la inversa en la figura (\ref{fig:jordan_ejemplo}). En la misma se puede apreciar cada paso como lo explicamos reci´én.
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.15\linewidth}
         \includegraphics[width=\linewidth]{img/matriz-a-aumentar.png}
@@ -123,7 +123,7 @@ El proceso consiste en construir una matriz aumentada que combine A y la matriz 
 
 Este método es una aplicación práctica del algoritmo de Gauss-Jordan y es especialmente útil porque, a diferencia de otras técnicas, no requiere descomposición LU o factorizaciones complicadas. Lo que hacemos es simplemente aplicar operaciones de fila que son fáciles de implementar.
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.3\linewidth}
         \includegraphics[width=\linewidth]{img/inversa_1.png}
