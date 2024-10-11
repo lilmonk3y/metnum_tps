@@ -697,40 +697,4 @@ Movido a la introducción
 \end{algorithmic}
 \end{algorithm}
 
-Para resolver el problema utilizamos las funciones vistas en el trabajo practico. A continuación, mostraremos un ejemplo de su aplicación.
-
-Consideremos la matriz \( A \):
-
-\[
-A = \begin{pmatrix}
-2 & 1 & 1 \\
-1 & 3 & 2 \\
-1 & 0 & 0
-\end{pmatrix}
-\]
-
-El objetivo es encontrar su inversa utilizando el método de eliminación gaussiana con una matriz aumentada. Para ello, se construye la matriz aumentada \( [A | I] \), donde \( I \) es la matriz identidad de las mismas dimensiones que \( A \):
-
-\[
-[A | I] = \begin{pmatrix}
-2 & 1 & 1 & 1 & 0 & 0 \\
-1 & 3 & 2 & 0 & 1 & 0 \\
-1 & 0 & 0 & 0 & 0 & 1
-\end{pmatrix}
-\]
-
-Paso 1: Convertir el primer pivote en 1
-Dividimos la primera fila por 2 para que el elemento en la posición (1,1) sea 1:
-
-\[
-\begin{pmatrix}
-1 & \frac{1}{2} & \frac{1}{2} & \frac{1}{2} & 0 & 0 \\
-1 & 3 & 2 & 0 & 1 & 0 \\
-1 & 0 & 0 & 0 & 0 & 1
-\end{pmatrix}
-\]
-
-Paso 2: Hacer ceros en la primera columna para las filas 2 y 3
-
-Restamos la primera fila a la segunda y tercera fila para eliminar los valores en la columna 1:
-
+Para resolver el problema utilizamos las funciones vistas en el trabajo practico. En la sección \ref{sec:inversa}, mostramos un ejemplo de su aplicación.

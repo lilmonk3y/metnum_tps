@@ -101,41 +101,115 @@ $\begin{bmatrix}
 \label{opcionales}
 \label{sec:inversa}
 
-La matriz inversa de una matriz $A$, la cual denotaremos como $A^{-1}$, es una matriz que cumple con la propiedad de $A.A^{-1}=A^{-1}.A=I$ siendo $I$ la matriz identidad. Esta matriz inversa no siempre existe. Si la matriz $A$ cumple ser cuadrada y que su determinante \cite{Strang-determinante} sea distinto de cero, entonces esta matriz si existe.
+La matriz inversa de una matriz $A$, la cual denotaremos como $A^{-1}$, es una matriz que cumple con la propiedad de $A.A^{-1}=A^{-1}.A=I$ siendo $I$ la matriz identidad. Esta matriz inversa no siempre existe. Si la matriz $A$ cumple ser cuadrada y que su determinante \cite{Strang-determinante} sea distinto de cero, entonces esta matriz si existe y por lo tanto, puede ser un método para resolver sistemas de ecuaciones lineales de la forma Ax=b, pues, se puede encontrar la solución al sistema directamente usando  x = $A^{-1}$b.
 
-Nuestro objetivo entonces, es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada (figura \ref{fig:aumentada}). Este enfoque se basa en transformar la matriz A en su forma diagonal, y al mismo tiempo, aplicar las mismas operaciones a la matriz identidad para obtener la inversa de A.
+Nuestro objetivo entonces, es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Este enfoque se basa en transformar la matriz A en su forma diagonal, y al mismo tiempo, aplicar las mismas operaciones a la matriz identidad para obtener la inversa de A.
 
-El proceso consiste en construir una matriz aumentada que combine A y la matriz identidad I. Luego, mediante la eliminación gaussiana, se van realizando operaciones fila por fila para convertir A en la matriz identidad. Al final de este proceso, la matriz que acompaña a I será la inversa de A. Se puede ver un ejemplo de como se calcula la inversa en la figura (\ref{fig:jordan_ejemplo}). En la misma se puede apreciar cada paso como lo explicamos reci´én.
+El proceso consiste en construir una matriz aumentada que combine A y la matriz identidad I. Luego, mediante la eliminación gaussiana, se van realizando operaciones fila por fila para convertir A en la matriz identidad. Al final de este proceso, la matriz que acompaña a I será la inversa de A. Se puede ver un ejemplo de como se calcula la inversa a continuación. En la misma se puede apreciar cada paso como lo explicamos reci´én.
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.15\linewidth}
-        \includegraphics[width=\linewidth]{img/matriz-a-aumentar.png}
-        \caption{Matriz A}
-    \end{minipage}
-  \begin{minipage}{0.3\linewidth}
-      \includegraphics[width=\linewidth]{img/matriz-aumentada.png}
-      \caption{Matriz ya aumentada}
-  \end{minipage}
-  \caption{Proceso de aumentar la matriz A.}
-  \label{fig:aumentada}
-\end{figure}
+%\begin{figure}[H]
+%    \centering
+%    \begin{minipage}{0.15\linewidth}
+%        \includegraphics[width=\linewidth]{img/matriz-a-aumentar.png}
+%        \caption{Matriz A}
+%    \end{minipage}
+%  \begin{minipage}{0.3\linewidth}
+%      \includegraphics[width=\linewidth]{img/matriz-aumentada.png}
+%      \caption{Matriz ya aumentada}
+%  \end{minipage}
+%  \caption{Proceso de aumentar la matriz A.}
+%  \label{fig:aumentada}
+%\end{figure}
+
+
+Consideremos la matriz \( A \):
+
+\[
+A = \begin{pmatrix}
+2 & 1 & 1 \\
+4 & -6 & 0 \\
+-2 & 7 & 2
+\end{pmatrix}
+\]
+
+El objetivo es encontrar su inversa utilizando el método de eliminación gaussiana con una matriz aumentada. Para ello, se construye la matriz aumentada \( [A | I] \), donde \( I \) es la matriz identidad de las mismas dimensiones que \( A \):
+
+\[
+[A | I] = [A  e1  e2  e3] = \begin{pmatrix}
+2 & 1 & 1 & 1 & 0 & 0 \\
+4 & -6 & 0 & 0 & 1 & 0 \\
+-2 & 7 & 2 & 0 & 0 & 1
+\end{pmatrix} 
+\]\label{fig:aumentada}
+
+
+Paso 1: Triangular A. Pivot = 2:
+
+\[
+\begin{pmatrix}
+2 & 1 & 1 & 1 & 0 & 0 \\
+0 & -8 & -2 & -2 & 1 & 0 \\
+0 & 8 & 3 & 1 & 0 & 1
+\end{pmatrix}
+\]
+
+
+ Pivot = -8
+ 
+\[
+\begin{pmatrix}
+2 & 1 & 1 & 1 & 0 & 0 \\
+0 & -8 & -2 & -2 & 1 & 0 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{pmatrix} = [U L^{-1}] 
+\]
+
+Paso 2: Convertir A en la identidad
+
+\[
+[U L^{-1}] = \begin{pmatrix}
+2 & 1 & 0 & 2 & -1 & -1 \\
+0 & -8 & 0 & -4 & 3 & 2 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{pmatrix} 
+\]
+
+Hacer cero arriba de los pivots:
+
+\[
+\begin{pmatrix}
+2 & 0 & 0 & \frac{12}{8} & -\frac{5}{8} & -\frac{6}{8} \\
+0 & -8 & 0 & -4 & 3 & 2 \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{pmatrix}
+\]
+
+Dividimos por los pivots:
+
+\[
+\begin{pmatrix}
+1 & 0 & 0 & \frac{12}{16} & -\frac{5}{16} & -\frac{6}{16} \\
+0 & 1 & 0 & \frac{4}{8} & -\frac{3}{8} & -\frac{2}{8} \\
+0 & 0 & 1 & -1 & 1 & 1
+\end{pmatrix} = [I A^{-1}].
+\]
+
 
 Este método es una aplicación práctica del algoritmo de Gauss-Jordan y es especialmente útil porque, a diferencia de otras técnicas, no requiere descomposición LU o factorizaciones complicadas. Lo que hacemos es simplemente aplicar operaciones de fila que son fáciles de implementar.
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.3\linewidth}
-        \includegraphics[width=\linewidth]{img/inversa_1.png}
-        \caption{Triangular A}
-    \end{minipage}
-  \begin{minipage}{0.3\linewidth}
-      \includegraphics[width=\linewidth]{img/inversa_2.png}
-      \caption{Convertir A en la identidad}
-  \end{minipage}
-  \caption{Ejemplo del algoritmo de Jordan para la matriz A.}
-  \label{fig:jordan_ejemplo}
-\end{figure}
+%\begin{figure}[H]
+%    \centering
+%    \begin{minipage}{0.3\linewidth}
+%        \includegraphics[width=\linewidth]{img/inversa_1.png}
+%        \caption{Triangular A}
+%    \end{minipage}
+%  \begin{minipage}{0.3\linewidth}
+%      \includegraphics[width=\linewidth]{img/inversa_2.png}
+%      \caption{Convertir A en la identidad}
+%  \end{minipage}
+%  \caption{Ejemplo del algoritmo de Jordan para la matriz A.}
+%  \label{fig:jordan_ejemplo}
+%\end{figure}
 
 
 
