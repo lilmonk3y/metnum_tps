@@ -241,12 +241,12 @@ Para la solución implícita podemos notar que se genera un sistema tridiagonal,
 Es así que, como en ningún paso queda un elemento de la diagonal igual a cero, no se requiere pivoteo.\par
 
 Para investigar los distintos grados de difusión utilizamos lso parámetros n = 101, r = 10, m = 1000 y ajustamos el parámetro $\alpha$, el cual se considera como una medida de la tasa de difusión en un modelo específico. Este valor representa una fracción del operador laplaciano, el cual interviene directamente en el cálculo de la difusión de un paso discreto al siguiente.
-Al modificar $\alpha$, se observa cómo varía el patrón y la velocidad de difusión de la entidad en cuestión. Por ejemplo, la primer experimentación que se realizo se tomó $\alpha$ = 1 obteniendo el resultado que se muestra en la figura \ref{result_dif}. Se pudo observar que el gráfico obtenido es equivalente al brindado por la cátedra.
+Al modificar $\alpha$, se observa cómo varía el patrón y la velocidad de difusión de la entidad en cuestión. Por ejemplo, la primer experimentación que se realizo se tomó $\alpha$ = 1 obteniendo el resultado que se muestra en la figura \ref{fig:alpha_1}. Se pudo observar que el gráfico obtenido es equivalente al brindado por la cátedra.
 
 A partir de esto, se planteo que a partir de valores más altos de $\alpha$, la difusión sería mayor, siendo probable que veamos una difusión más rápida, donde la entidad se propaga más lejos desde su punto de origen en un período de tiempo determinado.
 Mientras que con valores más bajos de $\alpha$, la difusión sería menor siendo probable que la difusión sea más lenta y limitada en alcance.
 Para realizar al experimentación, se crearon los vectores con los mismos datos para $\alpha$ = 1, variando únicamente este ultimo parámetro al cual se le asigno valores de 0.1, 0.5 y 2.
-A continuación, se generaron los cuatro gráficos que se pueden observar en las figuras \ref{fig:awesome_image1}, \ref{dif0.5} y \ref{fig:awesome_image2}.
+A continuación, se generaron los cuatro gráficos que se pueden observar en las figuras \ref{fig:awesome_image1}, \ref{dif0.5} y \ref{fig:result_dif}.
 %\begin{figure}[htbp]
 %\centerline{\includegraphics[scale=0.45]{./img/result_dif.png}}
 %\caption{Resultado difusión para $\alpha$ = 1}
@@ -270,13 +270,13 @@ A continuación, se generaron los cuatro gráficos que se pueden observar en las
   \begin{minipage}[b]{0.5\linewidth}
     \centering
     \includegraphics[width=.5\linewidth]{./img/result_dif.png}
-  \caption{Difusion $\alpha$ = 1}\label{fig:awesome_image2}
+  \caption{Difusion $\alpha$ = 1}\label{fig:alpha_1}
     \vspace{4ex}
   \end{minipage}%% 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
     \includegraphics[width=.5\linewidth]{./img/alfa2.png}
-  \caption{Difusión $\alpha$ = 2}\label{result_dif}
+  \caption{Difusión $\alpha$ = 2}\label{fig:result_dif}
     \vspace{4ex}
   \end{minipage} 
 \end{figure}
@@ -321,25 +321,25 @@ Podemos observar que en el instante t=10 en la figura \ref{instante10}, el calor
 
 \begin{figure}[H] 
   \label{ fig7} 
-  \begin{minipage}[b]{0.65\linewidth}
+  \begin{minipage}[b]{0.5\linewidth}
     \centering
     \includegraphics[width=.5\linewidth]{./img/instante_0.png}
-  \caption{Difusión $\alpha$ = 0.1}\label{instante0} 
+  \caption{Instante $t$ = 0}\label{instante0} 
     \vspace{4ex}
   \end{minipage}%%
-  \begin{minipage}[b]{0.65\linewidth}
+  \begin{minipage}[b]{0.5\linewidth}
       \centering
     \includegraphics[width=.5\linewidth]{./img/instante_10.png} 
     \caption{Instante $t$ = 10} \label{instante10} 
     \vspace{4ex}
   \end{minipage} 
-  \begin{minipage}[b]{0.65\linewidth}
+  \begin{minipage}[b]{0.5\linewidth}
     \centering
     \includegraphics[width=.5\linewidth]{./img/instante_50.png}
   \caption{Instante $t$ = 50}\label{instante50}
     \vspace{4ex}
   \end{minipage}%% 
-  \begin{minipage}[b]{0.65\linewidth}
+  \begin{minipage}[b]{0.5\linewidth}
     \centering
     \includegraphics[width=.5\linewidth]{./img/instante_100.png}
   \caption{Instante $t$ = 100}\label{instante100}
@@ -588,7 +588,7 @@ Movido a la introducción
     \begin{minipage}[b]{0.5\linewidth}
         \centering
         \includegraphics[width=.5\linewidth]{./img/alfa1.png}
-      \caption{Difusión $\alpha$ = 0.1}\label{fig:awesome_image1} 
+      \caption{Instante $t$ = 0}\label{fig:awesome_image1} 
         \vspace{4ex}
       \end{minipage}%%
       \begin{minipage}[b]{0.5\linewidth}
@@ -644,7 +644,7 @@ Movido a la introducción
       \begin{minipage}[b]{0.5\linewidth}
         \centering
         \includegraphics[width=.5\linewidth]{./img/instante_0.png}
-      \caption{Difusión $\alpha$ = 0.1}\label{instante0} 
+      \caption{Instante $t$ = 0}\label{instante0} 
         \vspace{4ex}
       \end{minipage}%%
       \begin{minipage}[b]{0.5\linewidth}
@@ -674,12 +674,12 @@ Movido a la introducción
 \fi
 
 
- \subsection{Opcionales}
+ \subsection{Cálculo de la inversa para una matriz}
 
- Como mencionamos en la sección \ref{opcionales}, el objetivo es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Para ello se implemento la función \textit{invertir\_sistema} cuyo pseudocódigo es el siguiente: 
+ Como mencionamos en la sección \ref{opcionales}, el objetivo es calcular la matriz inversa de una matriz A utilizando el método de eliminación gaussiana (EG) con una matriz aumentada. Para ello se implemento la función \textit{invertir\_sistema} (algoritmo [\ref{alg:inversa}]), que sigue la idea del algoritmo contada en esa sección, cuyo pseudocódigo se puede ver a continuación.
  
 \begin{algorithm}[H]
-\caption{Ejercicio opcional}
+\caption{Inversa para una matriz dada}
 \begin{algorithmic}
 \State \textbf{EG}(\textbf{in} A : matrix) $\to \textbf{A\_inv}$
  
@@ -691,10 +691,11 @@ Movido a la introducción
         \State  b $\gets$ new\_A.(1,n)
         \State x $\gets$ resolver$\_$sistema(base$\_$matrix,b)
         \State A$\_$inv[0:,i-n] $\gets$ x
-\EndFor
+ \EndFor
+ \State \textbf{return} $A\_inv$
 
-\Return{$A\_inv$}
 \end{algorithmic}
+\label{alg:inversa}
 \end{algorithm}
 
-Para resolver el problema utilizamos las funciones vistas en el trabajo practico. En la sección \ref{sec:inversa}, mostramos un ejemplo de su aplicación.
+Para resolver el problema utilizamos las funciones vistas en la secciones anteriores donde presentamos la eliminaci´ón gaussiana [\ref{sec:gaussiana}]. En la sección \ref{sec:inversa}, mostramos un ejemplo de su aplicación.

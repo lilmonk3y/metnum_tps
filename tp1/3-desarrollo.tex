@@ -74,8 +74,7 @@ La eliminación gaussiana con pivoteo parcial es una variante del algoritmo ante
 En este método, la elección del pivote para cada paso de eliminación hace que el algoritmo pueda resolver más problemas. El primer paso es buscar el elemento de mayor magnitud en la columna correspondiente, este elemento se intercambia con el elemento actual de la diagonal principal para garantizar que el pivote seleccionado tenga una magnitud relativamente grande, lo que reduce la posibilidad de errores numéricos debido a divisiones por valores cercanos a cero. 
 
 \begin{algorithm}
-\label{alg:pivoteo}
-\caption{Eliminación Gaussiana con pivoteo}
+\caption{Eliminación Gaussiana con pivoteo}\label{alg:pivoteo}
 \begin{algorithmic}[1]
 \State \textbf{EG}(\textbf{in} A : matrix, \textbf{in} b : vector) $\to \textbf{A}$
  
@@ -124,11 +123,11 @@ La eliminación gaussiana para sistemas tridiagonales es una adaptación eficien
 
  %\subsubsection{Eliminación Gaussiana para sistemas tridiagonales sin precómputo}
 
- De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = b, sin necesidad de funciones auxiliares. El pseudocódigo que proponemos se puede ver en el algoritmo [\ref{alg:tridiagonal_simple}.
+ De las variantes que hay para este problema, la primer implementación es la estándar o sin precomputo. Este algoritmo resuelve en una única función el sistema Ax = b, sin necesidad de funciones auxiliares. El pseudocódigo que proponemos se puede ver en el algoritmo \ref{alg:tridiagonal_simple}.
 
  \begin{algorithm}
- \label{alg:tridiagonal_simple}
-\caption{EG para tridiagonales sin precómputo}
+ 
+\caption{EG para tridiagonales sin precómputo}\label{alg:tridiagonal_simple}
 \begin{algorithmic}[1]
 \State \textbf{tridiag}(\textbf{in} a : vector, \textbf{in} b : vector, \textbf{in} c : vector, \textbf{in} r : vector) $\to \textbf{u}$
 \State n $\gets$ len(b)
