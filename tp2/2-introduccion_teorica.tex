@@ -1,2 +1,14 @@
-\section{Introducci´ón te´órica}
+\section{Marco teórico}
 \label{sec:intro_teorica}
+
+\subsection{Procesamiento de Lenguaje Natural (NLP)}
+Nos permite transformar textos en vectores numéricos, que después pueden analizarse y clasificarse. En este proyecto, cada resumen de película se representa según la frecuencia de ciertos tokens, generando vectores bastante grandes que vamos a simplificar con PCA.
+
+\subsection{Análisis de Componentes Principales (PCA)}
+PCA es una técnica de reducción de dimensionalidad que nos ayuda a identificar y sacar información redundante de los datos, como palabras que aparecen siempre juntas. Esto se logra descomponiendo la matriz de covarianza en autovectores y autovalores, generando componentes ordenadas según la varianza que explican. Usar PCA nos permite trabajar mejor con datos de muchas dimensiones y mejorar el rendimiento del modelo.
+
+\subsection{Clasificación con K-Vecinos Más Cercanos (KNN)}
+KNN clasifica cada película basándose en los 'k' vecinos más cercanos, usando la distancia coseno para medir la cercanía. El valor de 'k' se ajusta para optimizar la precisión del modelo en datos nuevos.
+
+\subsection{Validación Cruzada y Optimización de Hiperparámetros}
+La validación cruzada nos permite probar distintas configuraciones de hiperparámetros (cantidad de componentes en PCA y número de vecinos en KNN), evaluando cuál funciona mejor en subconjuntos de los datos para que el modelo generalice bien.

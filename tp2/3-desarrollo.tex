@@ -5,3 +5,178 @@
 
 Los datos que utilizamos para nuestro clasificador vienen de la base \textit{Wikipedia
 Movie Plots} \cite{wiki-movie-plot} la cual contiene informaci´ón de m´ás de 35 mil pel´ículas. Contiene la trama de las pel´ículas extraida de la misma Wikipedia por medio de web scrapping. De esta base utilizamos un subconjunto de los mismos \cite{wiki-movie-plot-tokens} que ya fu´é preprocesado para obtener los \textit{tokens}, o palabras m´ás significativas sin art´ículos o preposiciones. 
+
+\subsection{K-Nearest Neighbours}
+\label{sec:knn}
+Conceptualmente, el algoritmo KNN se encarga de medir qué tan parecidos son dos objetos al comparar sus atributos. Para esto, toma cada objeto como un punto en RnRn, donde nn es la cantidad de atributos. Luego, calcula la distancia entre dos de estos puntos para ver cuánto se parecen. Hay varias maneras de calcular esa distancia, y una opción común es la norma 2 de la diferencia entre ambos. En este trabajo, sin embargo, vamos a usar la distancia coseno:
+
+\[
+D_{C}(x, y) = 1- \frac{xy}{ \norm{x}_{2} \norm{y}_{2} }
+\]
+
+El algoritmo identifica los objetos de $df_{\text{train}}$ más cercanos a cada objeto de df$_{dev}$. A partir del parámetro k, elige los k objetos con menor distancia. Luego, entre las etiquetas de estos k vecinos más cercanos (Ytrain), selecciona la que más se repite (la moda) y le asigna esa etiqueta al objeto en Xdev. Después, compara esta etiqueta asignada con la verdadera etiqueta en Ydev para ver si fue un acierto o un error. Finalmente, el algoritmo suma los aciertos y calcula la performance dividiendo por el total de objetos en df$_{dev}$.
+
+El proceso de KNN tiene cuatro etapas:
+
+\begin{enumerate}
+    \item \textbf{Calcular la similitud entre cada objeto de $df_{\text{train}}$ y cada objeto de $df_{\text{dev}}$:} Para esto, se construye una matriz $D$ donde cada fila representa un objeto en $df_{\text{dev}}$ y cada columna un objeto en $df_{\text{train}}$. Cada elemento $(i, j)$ en esta matriz es la distancia $D_{C}(i, j)$. Si bien se podría armar con dos \texttt{for} anidados, para optimizar en velocidad con \texttt{np.arrays}, deducimos que:
+
+    \[
+    D_{C}(X,Y) = [unos] - X_{\text{devNormalizada}} \times {X_{\text{trainNormalizada}}}^T
+    \]
+
+
+    \item \textbf{Encontrar los $k$ objetos más cercanos:} Luego de calcular $D$, se seleccionan los $k$ objetos en $df_{\text{train}}$ que tengan menor distancia a cada objeto en $df_{\text{dev}}$. Esto se logra ordenando cada fila de $D$ de menor a mayor y recortando las columnas restantes para obtener una matriz de tamaño $\mathbf{R}^{\text{dim}(df_{\text{dev}}) \times k}$.
+
+    \item \textbf{Elegir el vecino más representativo:} Con los $k$ vecinos más cercanos listos, seleccionamos la etiqueta que más se repite entre ellos (la moda). Esto nos da la etiqueta final, que se obtiene a partir de cada fila de $D$ y las etiquetas en $df_{\text{train}}$.
+
+    \item \textbf{Calcular la performance del algoritmo:} Comparamos las etiquetas predichas con las etiquetas reales en $df_{\text{dev}}$ y contamos cuántas coincidieron. La performance se calcula como:
+
+    \[
+    \text{performance} = \frac{\text{cantidad de muestras bien reconocidas}}{\text{cantidad de muestras totales}}
+    \]
+\end{enumerate}
+
+
+
+\begin{algorithm}
+\caption{Distancia Coseno}\label{dist_cos}
+\begin{algorithmic}
+\State \textbf{distancia$\_$coseno}(\textbf{in} X : matrix,\textbf{in} Y : matrix) $\to \textbf{D}$
+ %%%% !!!!!!!!!!!!!!!!!!!! PAAAASAAR: 
+ %\State $col \gets A.shape[1]$
+ 
+% \For{$i \gets 0$ to $n-1$}
+%    \If{(equal$\_$zero($A[i][i]$))}
+%        \State  raise exception(‘‘Error, no se encuentra solución.'') 
+%    \EndIf
+
+%\For{$j \gets i+1$ to $n$}
+
+%    \State m$_{ij}$ = $\frac{a_{ji}}{a_{ii}}$
+    
+%    \For{$k \gets i$ to col}
+%        \State a$_{jk}$ = a$_{jk}$ - $m_{ji}*{a_{ik}}$
+%    \EndFor
+
+%\EndFor
+%\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{KNN}\label{knn_algo}
+\begin{algorithmic}
+\State \textbf{knn}(\textbf{in} A : matrix,\textbf{in} B : matrix) $\to \textbf{D}$
+ %%%% !!!!!!!!!!!!!!!!!!!! PAAAASAAR: 
+ %\State $col \gets A.shape[1]$
+ 
+% \For{$i \gets 0$ to $n-1$}
+%    \If{(equal$\_$zero($A[i][i]$))}
+%        \State  raise exception(‘‘Error, no se encuentra solución.'') 
+%    \EndIf
+
+%\For{$j \gets i+1$ to $n$}
+
+%    \State m$_{ij}$ = $\frac{a_{ji}}{a_{ii}}$
+    
+%    \For{$k \gets i$ to col}
+%        \State a$_{jk}$ = a$_{jk}$ - $m_{ji}*{a_{ik}}$
+%    \EndFor
+
+%\EndFor
+%\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Método de la potencia con deflación}
+\label{met_pot}
+
+El Método de la Potencia con Deflación se usa para calcular autovalores y autovectores en ciertas matrices. Para que funcione bien, la matriz debe cumplir con ciertas condiciones:
+
+\begin{itemize} 
+    \item Tiene que tener una base ortonormal de autovectores. 
+    \item Sus autovalores deben ser distintos entre sí. 
+    \item El vector inicial elegido no debe ser ni el vector nulo ni ortogonal al autovector principal (es decir, el que está asociado al autovalor de mayor módulo). Esta última condición es algo que depende del vector inicial y no de la matriz en sí.
+\end{itemize}
+
+Este método combina dos algoritmos que se van ejecutando en un ciclo hasta llegar a la solución. Primero, tenemos el Método de la Potencia, que se usa para encontrar el autovalor de mayor módulo de la matriz B. Esto solo permite encontrar un autovalor por vez. El método parte de que cualquier vector x se puede expresar como una combinación lineal de los autovectores de B. Esto se puede hacer solo porque asumimos de entrada que B tiene una base de autovectores:
+\[ 
+    x = \alpha_{1} \times v_{1} + \sum_{i=2}^{n} \alpha_{i} \times v_{i} 
+\]
+
+Luego, el algoritmo va iterando y en cada paso multiplica por B en ambos lados de la ecuación:
+
+\[ 
+x^{k} = B \times x^{k-1} = \alpha_{1} \times B^{k} \times v_{1} + B^{k} \times \sum_{i=2}^{n} \alpha_{i} \times v_{i} 
+\]
+\[ 
+x^{k} = \lambda_{1}^{k} \times (\alpha_{1} \times v_{1} + \sum_{i=2}^{n} \alpha_{i} \times \frac{\lambda_{i}^{k}}{\lambda_{1}^{k}} \times v_{i})
+\]
+
+Como $\lambda_{1}$ es el autovalor de mayor módulo, cuando $k \rightarrow \infty$, $x^{k} \rightarrow \alpha_{1} \times \lambda_{1}^{k} \times v_{1}$. Así, la dirección de $x^{k}$ coincide con la de $v_{1}$. Si vamos normalizando en cada iteración, nos queda:
+
+\[ 
+x^{k} = \frac{B \times x^{k-1}}{\norm{B \times x^{k-1}}}
+\]
+
+
+El segundo algoritmo es el Método de la Deflación, que crea una nueva matriz B′ con los mismos autovalores de B menos el de mayor módulo. La matriz B′ que cumple con esto es:
+\[
+B' = B - \lambda \times v \times v.T 
+\]
+
+donde $\lambda$ es el autovalor de mayor módulo de B y v es el autovector asociado.
+
+Así, el Método de la Potencia con Deflación es un ciclo entre el método de la Potencia y el método de la Deflación. Primero, tomamos una matriz B y usamos el método de la Potencia para obtener su autovalor principal y el autovector correspondiente. Luego, calculamos B′ aplicando deflación. Este ciclo se repite tantas veces como autovalores tenga la matriz (o sea, según la dimensión de la matriz).
+
+\begin{algorithm}
+\caption{Método de la Potencia}\label{power_algo}
+\begin{algorithmic}
+\State \textbf{power$\_$iteration}(\textbf{in} A : matrix,\textbf{in} B : matrix) $\to \textbf{D}$
+ %%%% !!!!!!!!!!!!!!!!!!!! PAAAASAAR: 
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Método de Deflación}\label{def_algo}
+\begin{algorithmic}
+\State \textbf{deflation$\_$method}(\textbf{in} A : matrix,\textbf{in} B : matrix) $\to \textbf{D}$
+ %%%% !!!!!!!!!!!!!!!!!!!! PAAAASAAR: 
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Método de la Potencia con Deflación}\label{def_algo}
+\begin{algorithmic}
+\State \textbf{eigen}(\textbf{in} A : matrix,\textbf{in} B : matrix) $\to \textbf{D}$
+ %%%% !!!!!!!!!!!!!!!!!!!! PAAAASAAR: 
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Cross Validation}
+En k-fold cross-validation, el conjunto de datos se divide en k partes (o folds) de tamaño similar. El modelo se entrena y evalúa k veces, usando un fold distinto como conjunto de validación en cada iteración, mientras que los k−1 folds restantes se utilizan para el entrenamiento. Así, el modelo pasa por todos los datos, tanto para entrenar como para validar, y se obtiene una estimación más robusta de su capacidad para generalizar.
+
+Para este trabajo, usamos 4-fold cross-validation, es decir, k=4. El procedimiento que seguimos es el siguiente:
+
+\begin{enumerate}
+    \item Dividimos el conjunto de datos en 4 folds de tamaño similar. 
+    \item Iteramos 4 veces; en cada iteración, entrenamos el modelo usando 3 de los folds y lo validamos en el fold restante.
+    \item Calculamos la performance en cada iteración (por ejemplo, con la medida de exactitud). 
+    \item Promediamos las performances obtenidas en las 4 iteraciones para tener una estimación general de la performance del modelo. 
+\end{enumerate}
+
+Luego, aplicando el algoritmo de KNN mencionado en la sección anterior \ref{sec:knn}, exploramos distintos valores del hiperparámetro k, que representa el número de vecinos considerados en la clasificación. Este valor de k es clave, ya que afecta de forma significativa el rendimiento del modelo: valores de k demasiado bajos pueden hacer que el modelo sea sensible al ruido, mientras que valores muy altos pueden hacer que pierda precisión.
+
+Para encontrar el valor óptimo de k, seguimos un procedimiento similar al de la validación cruzada de 4 folds, solo que ahora probamos diferentes valores de k y en cada caso entrenamos el modelo KNN en 3 de los 4 folds, evaluando su rendimiento en el fold restante. Al finalizar, el valor de k que maximiza la performance promedio del modelo es el que seleccionamos para continuar con el análisis.
+
+\subsection{PCA}
+
+
+
+
